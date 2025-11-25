@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biblical Timeline - 147 Books | PROJECT 147</title>
+    <title>Biblical Timeline - 159 Books | PROJECT 159</title>
     <link rel="stylesheet" href="css/styles.css">
     <style>
         .timeline-header {
@@ -182,10 +182,39 @@
     </style>
 </head>
 <body>
+    <!-- Navigation Menu -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="table-view.html" class="nav-logo">📜 PROJECT 159</a>
+            <button class="nav-toggle" onclick="toggleNav()">☰</button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="table-view.html" class="nav-link">📊 Cross-References</a></li>
+                <li><a href="arc-diagram.html" class="nav-link">🌈 Arc Diagram</a></li>
+                <li><a href="library.html" class="nav-link">📚 Library</a></li>
+                <li><a href="timeline.html" class="nav-link active">📅 Timeline</a></li>
+                <li><a href="history.html" class="nav-link">📖 History</a></li>
+                <li><a href="donate.html" class="nav-link">💛 Donate</a></li>
+            </ul>
+        </div>
+    </nav>
+    <style>
+        .main-nav { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-bottom: 2px solid rgba(255, 107, 157, 0.3); position: sticky; top: 0; z-index: 1000; padding: 0 20px; }
+        .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 15px 0; }
+        .nav-logo { font-size: 1.4em; font-weight: bold; color: #FFD700; text-decoration: none; }
+        .nav-logo:hover { color: #fff; }
+        .nav-links { display: flex; list-style: none; margin: 0; padding: 0; gap: 10px; }
+        .nav-link { color: #ccc; text-decoration: none; padding: 10px 15px; border-radius: 6px; transition: all 0.2s; font-size: 0.95em; }
+        .nav-link:hover { background: rgba(255, 107, 157, 0.2); color: #fff; }
+        .nav-link.active { background: rgba(255, 107, 157, 0.3); color: #FFD700; border: 1px solid rgba(255, 107, 157, 0.5); }
+        .nav-toggle { display: none; background: none; border: 2px solid #FFD700; color: #FFD700; font-size: 1.5em; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+        @media (max-width: 768px) { .nav-toggle { display: block; } .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; background: #1a1a2e; flex-direction: column; padding: 15px; border-bottom: 2px solid rgba(255, 107, 157, 0.3); } .nav-links.active { display: flex; } .nav-link { padding: 12px 15px; } }
+    </style>
+    <script>function toggleNav() { document.getElementById('nav-links').classList.toggle('active'); }</script>
+
     <div class="container">
         <div class="timeline-header">
             <h1>📅 Biblical Timeline</h1>
-            <p>Complete Chronology of All 147 Books</p>
+            <p>Complete Chronology of All 159 Books</p>
             <p style="font-size: 0.9em; margin-top: 10px;">From Ancient Law (1400 BC) to Modern Discoveries (2006 AD)</p>
         </div>
 
@@ -216,7 +245,7 @@
             </div>
             <div class="legend-item">
                 <div class="legend-color lost"></div>
-                <span>Lost/Referenced (14)</span>
+                <span>Lost/Referenced (26)</span>
             </div>
         </div>
 
@@ -254,7 +283,7 @@
                 <a href="history.html" style="color: var(--accent-cyan); text-decoration: none; margin: 0 15px;">History</a>
             </div>
             <p style="color: #666; margin: 10px 0; font-size: 0.8em;">
-                147 Books Cross-Reference Analysis | Built for biblical research and study
+                159 Books Cross-Reference Analysis | Built for biblical research and study
             </p>
         </div>
     </footer>

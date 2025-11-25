@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <title>History of Biblical Canon | PROJECT 147 Truth Seeking Division</title>
+    <title>History of Biblical Canon | PROJECT 159 Truth Seeking Division</title>
     <link rel="stylesheet" href="css/styles.css">
     <style>
         .header-custom {
@@ -113,17 +113,39 @@
     </style>
 </head>
 <body>
+    <!-- Navigation Menu -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="table-view.html" class="nav-logo">📜 PROJECT 159</a>
+            <button class="nav-toggle" onclick="toggleNav()">☰</button>
+            <ul class="nav-links-menu" id="nav-links">
+                <li><a href="table-view.html" class="nav-link">📊 Cross-References</a></li>
+                <li><a href="arc-diagram.html" class="nav-link">🌈 Arc Diagram</a></li>
+                <li><a href="library.html" class="nav-link">📚 Library</a></li>
+                <li><a href="timeline.html" class="nav-link">📅 Timeline</a></li>
+                <li><a href="history.html" class="nav-link active">📖 History</a></li>
+                <li><a href="donate.html" class="nav-link">💛 Donate</a></li>
+            </ul>
+        </div>
+    </nav>
+    <style>
+        .main-nav { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-bottom: 2px solid rgba(255, 107, 157, 0.3); position: sticky; top: 0; z-index: 1000; padding: 0 20px; }
+        .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 15px 0; }
+        .nav-logo { font-size: 1.4em; font-weight: bold; color: #FFD700; text-decoration: none; }
+        .nav-logo:hover { color: #fff; }
+        .nav-links-menu { display: flex; list-style: none; margin: 0; padding: 0; gap: 10px; }
+        .nav-link { color: #ccc; text-decoration: none; padding: 10px 15px; border-radius: 6px; transition: all 0.2s; font-size: 0.95em; }
+        .nav-link:hover { background: rgba(255, 107, 157, 0.2); color: #fff; }
+        .nav-link.active { background: rgba(255, 107, 157, 0.3); color: #FFD700; border: 1px solid rgba(255, 107, 157, 0.5); }
+        .nav-toggle { display: none; background: none; border: 2px solid #FFD700; color: #FFD700; font-size: 1.5em; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+        @media (max-width: 768px) { .nav-toggle { display: block; } .nav-links-menu { display: none; position: absolute; top: 100%; left: 0; right: 0; background: #1a1a2e; flex-direction: column; padding: 15px; border-bottom: 2px solid rgba(255, 107, 157, 0.3); } .nav-links-menu.active { display: flex; } .nav-link { padding: 12px 15px; } }
+    </style>
+    <script>function toggleNav() { document.getElementById('nav-links').classList.toggle('active'); }</script>
+
     <div class="container">
         <div class="header-custom">
             <h1>History of Biblical Canon</h1>
             <p>Why Some Books Are Recognized and Others Aren't</p>
-        </div>
-
-        <div class="nav-links">
-            <a href="table-view.html">Cross-References</a>
-            <a href="library.html">Library (147 Books)</a>
-            <a href="arc-diagram.html">Arc Diagram</a>
-            <a href="timeline.html">Timeline</a>
         </div>
 
         <!-- Introduction -->
@@ -448,22 +470,25 @@
 
         <!-- Lost Books -->
         <div class="content-section lost">
-            <h2>Lost Books (14 Referenced Texts)</h2>
+            <h2>Lost Books (26 Referenced Texts)</h2>
 
             <p>The Bible itself references books that no longer exist. These lost works were apparently known to biblical authors but have not survived to the present day.</p>
 
             <h3>Categories of Lost Books</h3>
             <ul>
-                <li><strong>War Chronicles:</strong> Book of the Wars of the Lord (Numbers 21:14)</li>
-                <li><strong>Royal Records:</strong> Annals of Solomon, Kings of Israel/Judah</li>
-                <li><strong>Prophetic Writings:</strong> Books of Samuel, Nathan, Gad, Iddo the Seer</li>
-                <li><strong>Pauline Letters:</strong> Earlier letter to Corinthians (1 Cor 5:9), Letter to Laodiceans (Col 4:16)</li>
+                <li><strong>War Chronicles:</strong> Book of the Wars of the Lord (Numbers 21:14), Book of Jasher (Joshua 10:13, 2 Samuel 1:18)</li>
+                <li><strong>Royal Records:</strong> Annals of Solomon (1 Kings 11:41), Annals of King David (1 Chronicles 27:24), Annals of Kings of Israel (1 Kings 14:19), Annals of Kings of Judah (1 Kings 14:29), Book of the Kings of Israel & Judah (2 Chronicles 27:7)</li>
+                <li><strong>Prophetic Writings:</strong> Book of Samuel the Seer (1 Chr 29:29), Book of Nathan the Prophet (1 Chr 29:29), Book of Gad the Seer (1 Chr 29:29), Prophecy of Ahijah (2 Chr 9:29), Visions of Iddo the Seer (2 Chr 12:15), Story of Prophet Iddo (2 Chr 13:22), Book of Shemaiah (2 Chr 12:15), Book of Jehu (2 Chr 20:34), Sayings of the Seers (2 Chr 33:19)</li>
+                <li><strong>Royal Biographies:</strong> Acts of Uzziah by Isaiah (2 Chr 26:22), Laments for Josiah (2 Chr 35:25), Commentary on Book of Kings (2 Chr 24:27)</li>
+                <li><strong>Constitutional Documents:</strong> Manner of the Kingdom (1 Samuel 10:25) - Samuel's book on kingly governance</li>
+                <li><strong>Pauline Letters:</strong> Earlier letter to Corinthians (1 Cor 5:9), Severe/Tearful letter to Corinthians (2 Cor 2:4), Letter to Laodiceans (Col 4:16)</li>
+                <li><strong>Intertestamental:</strong> Assumption of Moses (Jude 9 - Michael vs Satan over Moses' body)</li>
             </ul>
 
             <h3>What Happened to Them?</h3>
             <ul>
-                <li><strong>Physical Destruction:</strong> Wars, fires, decay of scrolls</li>
-                <li><strong>No Copies Made:</strong> Perhaps considered administrative, not sacred</li>
+                <li><strong>Physical Destruction:</strong> Wars, fires, decay of scrolls - Assyrian (722 BC) and Babylonian (586 BC) conquests destroyed royal archives</li>
+                <li><strong>No Copies Made:</strong> Perhaps considered administrative, not sacred - court records weren't preserved like Scripture</li>
                 <li><strong>Absorbed:</strong> Some content may have been incorporated into surviving books</li>
                 <li><strong>Deliberate Suppression:</strong> Some texts may have been destroyed as heretical</li>
             </ul>
@@ -475,7 +500,7 @@
 
             <p>Understanding canon history doesn't undermine faith - it enriches it. The Bible we have today emerged through centuries of careful discernment by communities of faith. Different traditions made different decisions, each with reasons rooted in theology and tradition.</p>
 
-            <p>PROJECT 147 exists to explore these connections and let you see how all 147 books - canonical, deuterocanonical, pseudepigraphal, and apocryphal - relate to each other through cross-references. The story of scripture is bigger than any single tradition.</p>
+            <p>PROJECT 159 exists to explore these connections and let you see how all 159 books - canonical, deuterocanonical, pseudepigraphal, and apocryphal - relate to each other through cross-references. The story of scripture is bigger than any single tradition.</p>
 
             <div class="quote-box">
                 "All Scripture is God-breathed and is useful for teaching, rebuking, correcting and training in righteousness."
@@ -487,7 +512,7 @@
     <footer>
         <div class="container">
             <p style="color: #888; margin: 10px 0; font-size: 0.9em;">
-                PROJECT 147 | Truth Seeking Division
+                PROJECT 159 | Truth Seeking Division
             </p>
             <div style="margin: 15px 0;">
                 <a href="table-view.html" style="color: var(--accent-cyan); text-decoration: none; margin: 0 15px;">Cross-References</a>
@@ -496,7 +521,7 @@
                 <a href="timeline.html" style="color: var(--accent-cyan); text-decoration: none; margin: 0 15px;">Timeline</a>
             </div>
             <p style="color: #666; margin: 10px 0; font-size: 0.8em;">
-                147 Books Cross-Reference Analysis | Built for biblical research and study
+                159 Books Cross-Reference Analysis | Built for biblical research and study
             </p>
         </div>
     </footer>

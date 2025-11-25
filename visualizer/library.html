@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <title>Biblical Library - 147 Books | PROJECT 137 Truth Seeking Division</title>
+    <title>Biblical Library - 159 Books | PROJECT 159 Truth Seeking Division</title>
     <link rel="stylesheet" href="css/styles.css">
     <style>
         .header-custom {
@@ -286,22 +286,46 @@
     </style>
 </head>
 <body>
+    <!-- Navigation Menu -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="table-view.html" class="nav-logo">📜 PROJECT 159</a>
+            <button class="nav-toggle" onclick="toggleNav()">☰</button>
+            <ul class="nav-links-menu" id="nav-links">
+                <li><a href="table-view.html" class="nav-link">📊 Cross-References</a></li>
+                <li><a href="arc-diagram.html" class="nav-link">🌈 Arc Diagram</a></li>
+                <li><a href="library.html" class="nav-link active">📚 Library</a></li>
+                <li><a href="timeline.html" class="nav-link">📅 Timeline</a></li>
+                <li><a href="history.html" class="nav-link">📖 History</a></li>
+                <li><a href="donate.html" class="nav-link">💛 Donate</a></li>
+            </ul>
+        </div>
+    </nav>
+    <style>
+        .main-nav { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-bottom: 2px solid rgba(255, 107, 157, 0.3); position: sticky; top: 0; z-index: 1000; padding: 0 20px; }
+        .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 15px 0; }
+        .nav-logo { font-size: 1.4em; font-weight: bold; color: #FFD700; text-decoration: none; }
+        .nav-logo:hover { color: #fff; }
+        .nav-links-menu { display: flex; list-style: none; margin: 0; padding: 0; gap: 10px; }
+        .nav-link { color: #ccc; text-decoration: none; padding: 10px 15px; border-radius: 6px; transition: all 0.2s; font-size: 0.95em; }
+        .nav-link:hover { background: rgba(255, 107, 157, 0.2); color: #fff; }
+        .nav-link.active { background: rgba(255, 107, 157, 0.3); color: #FFD700; border: 1px solid rgba(255, 107, 157, 0.5); }
+        .nav-toggle { display: none; background: none; border: 2px solid #FFD700; color: #FFD700; font-size: 1.5em; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+        @media (max-width: 768px) { .nav-toggle { display: block; } .nav-links-menu { display: none; position: absolute; top: 100%; left: 0; right: 0; background: #1a1a2e; flex-direction: column; padding: 15px; border-bottom: 2px solid rgba(255, 107, 157, 0.3); } .nav-links-menu.active { display: flex; } .nav-link { padding: 12px 15px; } }
+    </style>
+    <script>function toggleNav() { document.getElementById('nav-links').classList.toggle('active'); }</script>
+
     <div class="container">
         <div class="header-custom">
             <h1>Biblical Library</h1>
-            <p>147 Books: Protestant Canon, Deuterocanonical, Ethiopian, Dead Sea Scrolls, Gnostic & Lost Texts</p>
-        </div>
-
-        <div class="nav-links">
-            <a href="table-view.html">Cross-References Table</a>
-            <a href="index.html">Visualizer</a>
+            <p>159 Books: Protestant Canon, Deuterocanonical, Ethiopian, Dead Sea Scrolls, Gnostic & Lost Texts</p>
         </div>
 
         <input type="text" class="search-box" id="book-search" placeholder="Search books by name...">
 
         <div class="library-stats">
             <div class="stat-card">
-                <div class="stat-number">147</div>
+                <div class="stat-number">159</div>
                 <div class="stat-label">Total Books</div>
             </div>
             <div class="stat-card">
@@ -373,7 +397,7 @@
         <div class="category-section" id="lost-section">
             <div class="category-header">
                 <h2>Lost Books (Referenced in Scripture)</h2>
-                <span class="category-badge badge-lost">14 Books</span>
+                <span class="category-badge badge-lost">26 Books</span>
             </div>
             <div class="books-grid" id="lost-books"></div>
         </div>
@@ -421,7 +445,7 @@
                 <a href="history.html" style="color: var(--accent-cyan); margin: 0 15px;">History</a>
             </div>
             <p style="color: #666; margin: 10px 0; font-size: 0.8em;">
-                147 Books Cross-Reference Analysis | Built for biblical research and study
+                159 Books Cross-Reference Analysis | Built for biblical research and study
             </p>
         </div>
     </footer>
@@ -627,21 +651,33 @@
             'Genesis Apocryphon': { type: 'localHtml', file: 'dead-sea-scrolls/genesis-apocryphon.html', description: '1QapGen - Expanded Genesis', chapters: 1 },
             'Songs of Sabbath Sacrifice': { type: 'localHtml', file: 'dead-sea-scrolls/songs-sabbath-sacrifice.html', description: '4Q400 - Angelic liturgy', chapters: 1 },
 
-            // Lost Books
+            // Lost Books (26 books)
             'Book of the Wars of the Lord': { type: 'lost', description: 'Ancient Hebrew war chronicles cited in Numbers 21:14. Lost before the time of Christ.', references: ['Numbers 21:14'] },
+            'Book of Jasher (Lost)': { type: 'lost', description: 'Ancient chronicle cited for the sun standing still and David\'s lament.', references: ['Joshua 10:13', '2 Samuel 1:18'] },
             'Book of the Annals of Solomon': { type: 'lost', description: 'Official court records of Solomon\'s reign.', references: ['1 Kings 11:41'] },
+            'Annals of King David': { type: 'lost', description: 'Chronicles of King David\'s reign.', references: ['1 Chronicles 27:24'] },
             'Book of the Annals of the Kings of Israel': { type: 'lost', description: 'Official court records of northern kingdom. Referenced 17 times.', references: ['1 Kings 14:19', '2 Kings 15:31'] },
             'Book of the Annals of the Kings of Judah': { type: 'lost', description: 'Official court records of southern kingdom. Referenced 15 times.', references: ['1 Kings 14:29', '2 Kings 24:5'] },
+            'Book of Kings of Israel & Judah': { type: 'lost', description: 'Combined chronicle of both kingdoms.', references: ['2 Chronicles 27:7', '2 Chronicles 35:27'] },
             'Book of Samuel the Seer': { type: 'lost', description: 'Prophetic records about David\'s reign.', references: ['1 Chronicles 29:29'] },
             'Book of Nathan the Prophet': { type: 'lost', description: 'Nathan\'s prophetic writings.', references: ['1 Chronicles 29:29', '2 Chronicles 9:29'] },
             'Book of Gad the Seer': { type: 'lost', description: 'Prophetic records by David\'s seer.', references: ['1 Chronicles 29:29'] },
             'Prophecy of Ahijah': { type: 'lost', description: 'Prophetic writings about Solomon and Jeroboam.', references: ['2 Chronicles 9:29'] },
-            'Visions of Iddo the Seer': { type: 'lost', description: 'Prophetic visions referenced 3 times.', references: ['2 Chronicles 9:29', '2 Chronicles 12:15', '2 Chronicles 13:22'] },
+            'Visions of Iddo the Seer': { type: 'lost', description: 'Prophetic visions referenced 3 times.', references: ['2 Chronicles 9:29', '2 Chronicles 12:15'] },
+            'Story of Prophet Iddo': { type: 'lost', description: 'Midrash/story concerning prophet Iddo.', references: ['2 Chronicles 13:22'] },
             'Book of Shemaiah': { type: 'lost', description: 'Prophetic records about Rehoboam.', references: ['2 Chronicles 12:15'] },
             'Book of Jehu': { type: 'lost', description: 'Historical work about Jehoshaphat.', references: ['2 Chronicles 20:34'] },
             'Sayings of the Seers': { type: 'lost', description: 'Collection of prophetic sayings.', references: ['2 Chronicles 33:19'] },
+            'Acts of Uzziah by Isaiah': { type: 'lost', description: 'Isaiah\'s record of King Uzziah.', references: ['2 Chronicles 26:22'] },
+            'Laments for Josiah': { type: 'lost', description: 'Jeremiah\'s laments for King Josiah.', references: ['2 Chronicles 35:25'] },
+            'Commentary on Book of Kings': { type: 'lost', description: 'Midrash on the Book of Kings.', references: ['2 Chronicles 24:27'] },
+            'Manner of the Kingdom': { type: 'lost', description: 'Samuel\'s book on kingly governance.', references: ['1 Samuel 10:25'] },
             'Epistle to the Laodiceans': { type: 'lost', description: 'Paul\'s letter mentioned in Colossians 4:16.', references: ['Colossians 4:16'] },
-            'Earlier Epistle to the Corinthians': { type: 'lost', description: 'Paul\'s first letter to Corinth (before canonical 1 Corinthians).', references: ['1 Corinthians 5:9'] }
+            'Earlier Epistle to the Corinthians': { type: 'lost', description: 'Paul\'s first letter to Corinth (before canonical 1 Corinthians).', references: ['1 Corinthians 5:9'] },
+            'Severe Letter to Corinthians': { type: 'lost', description: 'Paul\'s tearful/severe letter written between 1 and 2 Corinthians.', references: ['2 Corinthians 2:4', '2 Corinthians 7:8'] },
+            'Assumption of Moses': { type: 'lost', description: 'Source for Michael vs Satan dispute over Moses\' body.', references: ['Jude 9'] },
+            'Prayer of Manasseh (source)': { type: 'lost', description: 'Original source referenced for Manasseh\'s prayer.', references: ['2 Chronicles 33:18'] },
+            'Visions of Iddo (Jeroboam)': { type: 'lost', description: 'Iddo\'s visions specifically about Jeroboam.', references: ['2 Chronicles 9:29'] }
         };
 
         // Text viewer state

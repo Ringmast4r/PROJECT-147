@@ -8,7 +8,7 @@ const PREVIEW_DATA = {
     "total_books": 66,
     "total_chapters": 158,
     "total_connections": 200,
-    "total_verse_refs": 344799,
+    "total_verse_refs": 345635,
     "is_preview": true,
     "preview_description": "Top 200 connections by weight for instant loading"
   },

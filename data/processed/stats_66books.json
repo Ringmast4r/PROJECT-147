@@ -1,0 +1,95 @@
+{
+  "total_verse_references": 344799,
+  "total_chapter_connections": 190522,
+  "total_connections": 190522,
+  "most_referenced_books": [
+    {
+      "book": "Psalms",
+      "count": 33983
+    },
+    {
+      "book": "Isaiah",
+      "count": 24048
+    },
+    {
+      "book": "Jeremiah",
+      "count": 17397
+    },
+    {
+      "book": "Matthew",
+      "count": 14785
+    },
+    {
+      "book": "Acts",
+      "count": 13761
+    },
+    {
+      "book": "John",
+      "count": 12856
+    },
+    {
+      "book": "Luke",
+      "count": 11803
+    },
+    {
+      "book": "Genesis",
+      "count": 11300
+    },
+    {
+      "book": "Ezekiel",
+      "count": 11233
+    },
+    {
+      "book": "Deuteronomy",
+      "count": 10004
+    }
+  ],
+  "most_referencing_books": [
+    {
+      "book": "Psalms",
+      "count": 30913
+    },
+    {
+      "book": "Isaiah",
+      "count": 20294
+    },
+    {
+      "book": "Jeremiah",
+      "count": 18430
+    },
+    {
+      "book": "Matthew",
+      "count": 13833
+    },
+    {
+      "book": "Ezekiel",
+      "count": 13659
+    },
+    {
+      "book": "Genesis",
+      "count": 13327
+    },
+    {
+      "book": "Acts",
+      "count": 13319
+    },
+    {
+      "book": "Luke",
+      "count": 12371
+    },
+    {
+      "book": "John",
+      "count": 11797
+    },
+    {
+      "book": "Exodus",
+      "count": 9974
+    }
+  ],
+  "testament_distribution": {
+    "OT_to_OT": 187117,
+    "OT_to_NT": 43087,
+    "NT_to_OT": 30226,
+    "NT_to_NT": 84369
+  }
+}

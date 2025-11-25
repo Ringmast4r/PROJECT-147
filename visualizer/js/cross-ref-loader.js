@@ -59,7 +59,7 @@ class CrossRefLoader {
     }
 
     getBookType(verse) {
-        // Ethiopian books
+        // Ethiopian/Pseudepigrapha books
         if (verse.includes('1En.') || verse.includes('Enoch')) return 'Ethiopian';
         if (verse.includes('Jub.') || verse.includes('Jubilees')) return 'Ethiopian';
         if (verse.includes('Meq')) return 'Ethiopian';
@@ -68,10 +68,24 @@ class CrossRefLoader {
         if (verse.includes('PsSol') || verse.includes('Psalms of Solomon')) return 'Ethiopian';
         if (verse.includes('4Ezra')) return 'Ethiopian';
         if (verse.includes('4Bar')) return 'Ethiopian';
-        if (verse.includes('T12Pat') || verse.includes('Testament')) return 'Ethiopian';
+        if (verse.includes('T12Pat')) return 'Ethiopian';
         if (verse.includes('Odes')) return 'Ethiopian';
         if (verse.includes('Prayer of Manasseh')) return 'Ethiopian';
         if (verse.includes('Psalm 151')) return 'Ethiopian';
+        // Testaments of the Twelve Patriarchs - individual books
+        if (verse.includes('TLevi')) return 'Ethiopian';
+        if (verse.includes('TJud')) return 'Ethiopian';
+        if (verse.includes('TBenj')) return 'Ethiopian';
+        if (verse.includes('TReub')) return 'Ethiopian';
+        if (verse.includes('TGad')) return 'Ethiopian';
+        if (verse.includes('TDan')) return 'Ethiopian';
+        if (verse.includes('TZeb')) return 'Ethiopian';
+        if (verse.includes('TIss')) return 'Ethiopian';
+        if (verse.includes('TJos')) return 'Ethiopian';
+        if (verse.includes('TNaph')) return 'Ethiopian';
+        if (verse.includes('TJob')) return 'Ethiopian';
+        if (verse.includes('TAsh')) return 'Ethiopian';
+        if (verse.includes('TSim')) return 'Ethiopian';
 
         // Deuterocanonical
         if (verse.includes('Tob.') || verse.includes('Tobit')) return 'Deuterocanonical';
@@ -81,11 +95,15 @@ class CrossRefLoader {
         if (verse.includes('Bar.') || verse.includes('Baruch')) return 'Deuterocanonical';
         if (verse.includes('1Macc') || verse.includes('2Macc')) return 'Deuterocanonical';
 
-        // Gnostic (will add later)
-        if (verse.includes('Gospel of Judas')) return 'Gnostic';
-        if (verse.includes('Gospel of Thomas')) return 'Gnostic';
-        if (verse.includes('Gospel of Philip')) return 'Gnostic';
-        if (verse.includes('Gospel of Mary')) return 'Gnostic';
+        // Gnostic/Early Christian
+        if (verse.includes('GThom') || verse.includes('Gospel of Thomas')) return 'Gnostic';
+        if (verse.includes('GPhil') || verse.includes('Gospel of Philip')) return 'Gnostic';
+        if (verse.includes('GMary') || verse.includes('Gospel of Mary')) return 'Gnostic';
+        if (verse.includes('GJudas') || verse.includes('Gospel of Judas')) return 'Gnostic';
+        if (verse.includes('Did.') || verse.includes('Didache')) return 'Gnostic';
+        if (verse.includes('Barn.') || verse.includes('Barnabas')) return 'Gnostic';
+        if (verse.includes('Herm.') || verse.includes('Hermas')) return 'Gnostic';
+        if (verse.includes('ApocPet')) return 'Gnostic';
 
         return 'Canonical';
     }

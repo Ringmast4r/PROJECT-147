@@ -1,21 +1,53 @@
-// Data Augmenter - Extends 88-book data to 147 books
+// Data Augmenter - Extends 88-book data to 159 books
 // Adds Dead Sea Scrolls, Gnostic texts, Lost books, and missing Ethiopian/Deuterocanonical
 
 class DataAugmenter147 {
     constructor() {
         // Additional books to add beyond the 88-book base
         this.additionalBooks = {
-            // Missing Deuterocanonical (7 more to reach 14)
+            // Deuterocanonical books (main ones referenced in cross-references + extras)
             deuterocanonical: [
+                // Main Deuterocanonical books referenced in cross-references
+                { name: 'Tobit', abbrev: 'Tob', chapters: 14, testament: 'OT', canon: 'Deuterocanonical' },
+                { name: 'Judith', abbrev: 'Jdt', chapters: 16, testament: 'OT', canon: 'Deuterocanonical' },
+                { name: 'Wisdom', abbrev: 'Wis', chapters: 19, testament: 'OT', canon: 'Deuterocanonical' },
+                { name: 'Sirach', abbrev: 'Sir', chapters: 51, testament: 'OT', canon: 'Deuterocanonical' },
+                { name: 'Baruch', abbrev: 'Bar', chapters: 6, testament: 'OT', canon: 'Deuterocanonical' },
+                { name: '1 Maccabees', abbrev: '1Macc', chapters: 16, testament: 'OT', canon: 'Deuterocanonical' },
+                { name: '2 Maccabees', abbrev: '2Macc', chapters: 15, testament: 'OT', canon: 'Deuterocanonical' },
+                // Additional Deuterocanonical
                 { name: 'Susanna', abbrev: 'Sus', chapters: 1, testament: 'OT', canon: 'Deuterocanonical' },
                 { name: 'Bel and the Dragon', abbrev: 'Bel', chapters: 1, testament: 'OT', canon: 'Deuterocanonical' },
                 { name: 'Prayer of Azariah', abbrev: 'PrAzar', chapters: 1, testament: 'OT', canon: 'Deuterocanonical' },
                 { name: 'Greek Esther', abbrev: 'GkEsth', chapters: 6, testament: 'OT', canon: 'Deuterocanonical' },
                 { name: '1 Esdras', abbrev: '1Esd', chapters: 9, testament: 'OT', canon: 'Deuterocanonical' },
-                { name: '2 Esdras', abbrev: '2Esd', chapters: 16, testament: 'OT', canon: 'Deuterocanonical' }
+                { name: '2 Esdras', abbrev: '2Esd', chapters: 16, testament: 'OT', canon: 'Deuterocanonical' },
+                { name: '4 Ezra', abbrev: '4Ezra', chapters: 16, testament: 'OT', canon: 'Deuterocanonical' },
+                { name: '3 Maccabees', abbrev: '3Macc', chapters: 7, testament: 'OT', canon: 'Deuterocanonical' },
+                { name: '4 Maccabees', abbrev: '4Macc', chapters: 18, testament: 'OT', canon: 'Deuterocanonical' },
+                { name: 'Prayer of Manasseh', abbrev: 'PrMan', chapters: 1, testament: 'OT', canon: 'Deuterocanonical' }
             ],
-            // Missing Ethiopian/Pseudepigrapha (6 more to reach 21)
+            // Ethiopian/Pseudepigrapha (main ones referenced in cross-references + extras)
             ethiopian: [
+                // Main Ethiopian books referenced in cross-references
+                { name: '1 Enoch', abbrev: '1En', chapters: 108, testament: 'OT', canon: 'Ethiopian' },
+                { name: 'Jubilees', abbrev: 'Jub', chapters: 50, testament: 'OT', canon: 'Ethiopian' },
+                { name: 'Testament of the Twelve Patriarchs', abbrev: 'T12P', chapters: 12, testament: 'OT', canon: 'Ethiopian' },
+                { name: 'Psalms of Solomon', abbrev: 'PssSol', chapters: 18, testament: 'OT', canon: 'Ethiopian' },
+                // Individual Testament books
+                { name: 'Testament of Levi', abbrev: 'TLevi', chapters: 19, testament: 'OT', canon: 'Ethiopian' },
+                { name: 'Testament of Judah', abbrev: 'TJud', chapters: 26, testament: 'OT', canon: 'Ethiopian' },
+                { name: 'Testament of Benjamin', abbrev: 'TBenj', chapters: 12, testament: 'OT', canon: 'Ethiopian' },
+                { name: 'Testament of Reuben', abbrev: 'TReub', chapters: 7, testament: 'OT', canon: 'Ethiopian' },
+                { name: 'Testament of Simeon', abbrev: 'TSim', chapters: 9, testament: 'OT', canon: 'Ethiopian' },
+                { name: 'Testament of Issachar', abbrev: 'TIss', chapters: 7, testament: 'OT', canon: 'Ethiopian' },
+                { name: 'Testament of Zebulun', abbrev: 'TZeb', chapters: 10, testament: 'OT', canon: 'Ethiopian' },
+                { name: 'Testament of Dan', abbrev: 'TDan', chapters: 7, testament: 'OT', canon: 'Ethiopian' },
+                { name: 'Testament of Naphtali', abbrev: 'TNaph', chapters: 9, testament: 'OT', canon: 'Ethiopian' },
+                { name: 'Testament of Gad', abbrev: 'TGad', chapters: 8, testament: 'OT', canon: 'Ethiopian' },
+                { name: 'Testament of Asher', abbrev: 'TAsh', chapters: 8, testament: 'OT', canon: 'Ethiopian' },
+                { name: 'Testament of Joseph', abbrev: 'TJos', chapters: 20, testament: 'OT', canon: 'Ethiopian' },
+                // Additional Ethiopian/Pseudepigrapha
                 { name: '2 Enoch', abbrev: '2En', chapters: 68, testament: 'OT', canon: 'Ethiopian' },
                 { name: '3 Enoch', abbrev: '3En', chapters: 48, testament: 'OT', canon: 'Ethiopian' },
                 { name: '2 Baruch', abbrev: '2Bar', chapters: 87, testament: 'OT', canon: 'Ethiopian' },
@@ -61,14 +93,14 @@ class DataAugmenter147 {
                 { name: 'Sophia of Jesus Christ', abbrev: 'SophJC', chapters: 1, testament: 'Gnostic', canon: 'Gnostic' },
                 { name: 'Pistis Sophia', abbrev: 'PistSoph', chapters: 4, testament: 'Gnostic', canon: 'Gnostic' },
                 { name: 'Dialogue of the Savior', abbrev: 'DialSav', chapters: 1, testament: 'Gnostic', canon: 'Gnostic' },
-                { name: 'Book of Thomas', abbrev: 'BkThom', chapters: 1, testament: 'Gnostic', canon: 'Gnostic' },
+                { name: 'Book of Thomas the Contender', abbrev: 'BkThom', chapters: 1, testament: 'Gnostic', canon: 'Gnostic' },
                 { name: 'Didache', abbrev: 'Did', chapters: 16, testament: 'Gnostic', canon: 'Gnostic' },
                 { name: 'Shepherd of Hermas', abbrev: 'Hermas', chapters: 114, testament: 'Gnostic', canon: 'Gnostic' },
                 { name: 'Epistle of Barnabas', abbrev: 'Barn', chapters: 21, testament: 'Gnostic', canon: 'Gnostic' },
                 { name: 'Acts of Paul and Thecla', abbrev: 'ActsPT', chapters: 1, testament: 'Gnostic', canon: 'Gnostic' },
                 { name: 'Apocalypse of Peter', abbrev: 'ApocPet', chapters: 1, testament: 'Gnostic', canon: 'Gnostic' }
             ],
-            // Lost Books (14 books) - Referenced but lost
+            // Lost Books (26 books) - Referenced but lost
             lost: [
                 { name: 'Book of the Wars of the Lord', abbrev: 'WarsLord', chapters: 1, testament: 'Lost', canon: 'Lost' },
                 { name: 'Book of Jasher (Lost)', abbrev: 'JasherL', chapters: 1, testament: 'Lost', canon: 'Lost' },
@@ -84,7 +116,18 @@ class DataAugmenter147 {
                 { name: 'Book of Jehu', abbrev: 'Jehu', chapters: 1, testament: 'Lost', canon: 'Lost' },
                 { name: 'Sayings of the Seers', abbrev: 'SaySeers', chapters: 1, testament: 'Lost', canon: 'Lost' },
                 { name: 'Epistle to Laodiceans', abbrev: 'EpLaod', chapters: 1, testament: 'Lost', canon: 'Lost' },
-                { name: 'Earlier Epistle to Corinthians', abbrev: 'EarlierCor', chapters: 1, testament: 'Lost', canon: 'Lost' }
+                { name: 'Earlier Epistle to Corinthians', abbrev: 'EarlierCor', chapters: 1, testament: 'Lost', canon: 'Lost' },
+                { name: 'Severe Letter to Corinthians', abbrev: 'SevereCor', chapters: 1, testament: 'Lost', canon: 'Lost' },
+                { name: 'Annals of King David', abbrev: 'AnnDavid', chapters: 1, testament: 'Lost', canon: 'Lost' },
+                { name: 'Manner of the Kingdom', abbrev: 'MannerKing', chapters: 1, testament: 'Lost', canon: 'Lost' },
+                { name: 'Acts of Uzziah by Isaiah', abbrev: 'ActsUzziah', chapters: 1, testament: 'Lost', canon: 'Lost' },
+                { name: 'Laments for Josiah', abbrev: 'LamentsJos', chapters: 1, testament: 'Lost', canon: 'Lost' },
+                { name: 'Story of Prophet Iddo', abbrev: 'StoryIddo', chapters: 1, testament: 'Lost', canon: 'Lost' },
+                { name: 'Book of Kings of Israel & Judah', abbrev: 'BkKingsIJ', chapters: 1, testament: 'Lost', canon: 'Lost' },
+                { name: 'Commentary on Book of Kings', abbrev: 'CommKings', chapters: 1, testament: 'Lost', canon: 'Lost' },
+                { name: 'Assumption of Moses', abbrev: 'AssumpMos', chapters: 1, testament: 'Lost', canon: 'Lost' },
+                { name: 'Prayer of Manasseh (source)', abbrev: 'PrayerMan', chapters: 1, testament: 'Lost', canon: 'Lost' },
+                { name: 'Visions of Iddo (Jeroboam)', abbrev: 'VisIddo', chapters: 1, testament: 'Lost', canon: 'Lost' }
             ]
         };
 
@@ -110,7 +153,7 @@ class DataAugmenter147 {
     /**
      * Augment the loaded graph data with additional books and connections
      * @param {Object} graphData - The original 88-book graph data
-     * @returns {Object} - Augmented 147-book graph data
+     * @returns {Object} - Augmented 159-book graph data
      */
     augment(graphData) {
         if (!graphData || !graphData.books) {
@@ -118,7 +161,7 @@ class DataAugmenter147 {
             return graphData;
         }
 
-        console.log('📚 Augmenting data from 88 to 147 books...');
+        console.log('📚 Augmenting data from 88 to 159 books...');
 
         // Clone the original data
         const augmented = JSON.parse(JSON.stringify(graphData));
@@ -197,24 +240,117 @@ class DataAugmenter147 {
             }
         });
 
+        // NOTE: We do NOT reorder chapters - keep original order to preserve connection indices
+        // The 88-book data has chapters in: OT → Deut → Ethiopian → NT order
+        // Reordering would break all connection source/target indices
+
         // Update metadata
         augmented.metadata = {
             ...augmented.metadata,
             total_books: augmented.books.length,
             total_chapters: augmented.chapters.length,
             total_connections: augmented.connections.length,
-            canon: '147-book Complete Biblical Library',
+            canon: '159-book Complete Biblical Library',
             includes_deuterocanonical: true,
             includes_ethiopian: true,
             includes_dead_sea_scrolls: true,
             includes_gnostic: true,
             includes_lost: true,
-            augmented: true
+            augmented: true,
+            reordered: true
         };
 
         console.log(`✅ Augmentation complete: ${augmented.metadata.total_books} books, ${augmented.metadata.total_chapters} chapters, ${augmented.metadata.total_connections} connections`);
 
         return augmented;
+    }
+
+    /**
+     * Reorder chapters for classic Chris Harrison visualization
+     * Order: OT Protestant → NT Protestant → Deuterocanonical → Ethiopian → DSS → Gnostic → Lost
+     */
+    reorderChaptersClassic(chapters) {
+        // Define Protestant OT books (39 books)
+        const protestantOT = [
+            'Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy',
+            'Joshua', 'Judges', 'Ruth', '1 Samuel', '2 Samuel',
+            '1 Kings', '2 Kings', '1 Chronicles', '2 Chronicles',
+            'Ezra', 'Nehemiah', 'Esther', 'Job', 'Psalms',
+            'Proverbs', 'Ecclesiastes', 'Song of Solomon', 'Isaiah',
+            'Jeremiah', 'Lamentations', 'Ezekiel', 'Daniel',
+            'Hosea', 'Joel', 'Amos', 'Obadiah', 'Jonah',
+            'Micah', 'Nahum', 'Habakkuk', 'Zephaniah', 'Haggai',
+            'Zechariah', 'Malachi'
+        ];
+
+        // Define Protestant NT books (27 books)
+        const protestantNT = [
+            'Matthew', 'Mark', 'Luke', 'John', 'Acts',
+            'Romans', '1 Corinthians', '2 Corinthians', 'Galatians',
+            'Ephesians', 'Philippians', 'Colossians', '1 Thessalonians',
+            '2 Thessalonians', '1 Timothy', '2 Timothy', 'Titus',
+            'Philemon', 'Hebrews', 'James', '1 Peter', '2 Peter',
+            '1 John', '2 John', '3 John', 'Jude', 'Revelation'
+        ];
+
+        // Define Deuterocanonical books
+        const deuterocanonical = [
+            'Tobit', 'Judith', 'Wisdom', 'Sirach', 'Baruch',
+            '1 Maccabees', '2 Maccabees', 'Susanna', 'Bel and the Dragon',
+            'Prayer of Azariah', 'Greek Esther', '1 Esdras', '2 Esdras', 'Prayer of Manasseh'
+        ];
+
+        // Create sets for fast lookup
+        const otSet = new Set(protestantOT);
+        const ntSet = new Set(protestantNT);
+        const deutSet = new Set(deuterocanonical);
+
+        // Categorize chapters
+        const otChapters = [];
+        const ntChapters = [];
+        const deutChapters = [];
+        const ethiopianChapters = [];
+        const dssChapters = [];
+        const gnosticChapters = [];
+        const lostChapters = [];
+
+        chapters.forEach(ch => {
+            if (otSet.has(ch.book)) {
+                otChapters.push(ch);
+            } else if (ntSet.has(ch.book)) {
+                ntChapters.push(ch);
+            } else if (deutSet.has(ch.book)) {
+                deutChapters.push(ch);
+            } else if (ch.testament === 'DSS' || ch.canon === 'Dead Sea Scrolls') {
+                dssChapters.push(ch);
+            } else if (ch.testament === 'Gnostic' || ch.canon === 'Gnostic') {
+                gnosticChapters.push(ch);
+            } else if (ch.testament === 'Lost' || ch.canon === 'Lost') {
+                lostChapters.push(ch);
+            } else {
+                // Ethiopian/Pseudepigrapha (everything else)
+                ethiopianChapters.push(ch);
+            }
+        });
+
+        console.log(`  📖 OT: ${otChapters.length} chapters`);
+        console.log(`  📖 NT: ${ntChapters.length} chapters`);
+        console.log(`  📖 Deuterocanonical: ${deutChapters.length} chapters`);
+        console.log(`  📖 Ethiopian: ${ethiopianChapters.length} chapters`);
+        console.log(`  📖 DSS: ${dssChapters.length} chapters`);
+        console.log(`  📖 Gnostic: ${gnosticChapters.length} chapters`);
+        console.log(`  📖 Lost: ${lostChapters.length} chapters`);
+
+        // Combine in classic order: OT → NT → Deut → Ethiopian → DSS → Gnostic → Lost
+        return [
+            ...otChapters,
+            ...ntChapters,
+            ...deutChapters,
+            ...ethiopianChapters,
+            ...dssChapters,
+            ...gnosticChapters,
+            ...lostChapters
+        ];
     }
 }
 

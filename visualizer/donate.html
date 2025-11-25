@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <title>Donate | PROJECT 159 Truth Seeking Division</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://www.paypal.com/sdk/js?client-id=BAAQ549H7F7rJxAdCiNjTx5wnTqkjfotCT51gKWMpG5HOCmbOqti6eLAFfbad5b2JXjW5IPO__BQ8detMg&components=hosted-buttons&enable-funding=venmo&currency=USD"></script>
+    <style>
+        .header-custom {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #1a1a2e;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+        }
+        .header-custom h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: bold;
+        }
+        .header-custom p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+        }
+        .donate-container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .donate-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+        .donate-box h2 {
+            color: var(--accent-gold);
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        .donate-box p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        #paypal-container-TQCCTRXZSQ58G {
+            width: 300px;
+            margin: 20px auto;
+            text-align: left;
+        }
+        .support-reasons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+        .reason-card {
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .reason-card:hover {
+            border-color: var(--accent-gold);
+            transform: translateY(-3px);
+        }
+        .reason-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        .reason-card h3 {
+            color: var(--accent-gold);
+            margin: 0 0 10px 0;
+            font-size: 1.1em;
+        }
+        .reason-card p {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            margin: 0;
+            line-height: 1.4;
+        }
+        .thank-you {
+            margin-top: 40px;
+            padding: 20px;
+            background: rgba(0, 206, 209, 0.1);
+            border: 1px solid rgba(0, 206, 209, 0.3);
+            border-radius: 8px;
+        }
+        .thank-you p {
+            color: #00CED1;
+            margin: 0;
+            font-style: italic;
+        }
+        footer {
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+            border-top: 1px solid rgba(255, 107, 157, 0.2);
+            padding: 20px 0;
+            margin-top: 60px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Menu -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="table-view.html" class="nav-logo">PROJECT 159</a>
+            <button class="nav-toggle" onclick="toggleNav()">☰</button>
+            <ul class="nav-links-menu" id="nav-links">
+                <li><a href="table-view.html" class="nav-link">Cross-References</a></li>
+                <li><a href="arc-diagram.html" class="nav-link">Arc Diagram</a></li>
+                <li><a href="library.html" class="nav-link">Library</a></li>
+                <li><a href="timeline.html" class="nav-link">Timeline</a></li>
+                <li><a href="history.html" class="nav-link">History</a></li>
+                <li><a href="donate.html" class="nav-link active">Donate</a></li>
+            </ul>
+        </div>
+    </nav>
+    <style>
+        .main-nav { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-bottom: 2px solid rgba(255, 107, 157, 0.3); position: sticky; top: 0; z-index: 1000; padding: 0 20px; }
+        .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 15px 0; }
+        .nav-logo { font-size: 1.4em; font-weight: bold; color: #FFD700; text-decoration: none; }
+        .nav-logo:hover { color: #fff; }
+        .nav-links-menu { display: flex; list-style: none; margin: 0; padding: 0; gap: 10px; }
+        .nav-link { color: #ccc; text-decoration: none; padding: 10px 15px; border-radius: 6px; transition: all 0.2s; font-size: 0.95em; }
+        .nav-link:hover { background: rgba(255, 107, 157, 0.2); color: #fff; }
+        .nav-link.active { background: rgba(255, 215, 0, 0.3); color: #FFD700; border: 1px solid rgba(255, 215, 0, 0.5); }
+        .nav-toggle { display: none; background: none; border: 2px solid #FFD700; color: #FFD700; font-size: 1.5em; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+        @media (max-width: 768px) { .nav-toggle { display: block; } .nav-links-menu { display: none; position: absolute; top: 100%; left: 0; right: 0; background: #1a1a2e; flex-direction: column; padding: 15px; border-bottom: 2px solid rgba(255, 107, 157, 0.3); } .nav-links-menu.active { display: flex; } .nav-link { padding: 12px 15px; } }
+    </style>
+    <script>function toggleNav() { document.getElementById('nav-links').classList.toggle('active'); }</script>
+
+    <div class="container">
+        <div class="header-custom">
+            <h1>Support PROJECT 159</h1>
+            <p>Help us continue building free biblical research tools</p>
+        </div>
+
+        <div class="donate-container">
+            <div class="donate-box">
+                <h2>Make a Donation</h2>
+                <p>Your support helps maintain and expand this biblical cross-reference visualization project. All donations go directly toward hosting, data acquisition, and development of new features.</p>
+
+                <div id="paypal-container-TQCCTRXZSQ58G"></div>
+                <script>
+                    paypal.HostedButtons({
+                        hostedButtonId: "TQCCTRXZSQ58G",
+                    }).render("#paypal-container-TQCCTRXZSQ58G")
+                </script>
+            </div>
+
+            <div class="support-reasons">
+                <div class="reason-card">
+                    <div class="reason-icon">159</div>
+                    <h3>159 Books</h3>
+                    <p>Expanding beyond traditional canons to include Deuterocanonical, Ethiopian, DSS, and Gnostic texts</p>
+                </div>
+                <div class="reason-card">
+                    <div class="reason-icon">345K</div>
+                    <h3>Cross-References</h3>
+                    <p>Over 345,000 biblical cross-references visualized and searchable</p>
+                </div>
+                <div class="reason-card">
+                    <div class="reason-icon">100%</div>
+                    <h3>Free & Open</h3>
+                    <p>All tools remain free for everyone seeking biblical truth</p>
+                </div>
+            </div>
+
+            <div class="thank-you">
+                <p>"For where your treasure is, there your heart will be also." - Matthew 6:21</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p style="color: var(--text-secondary); margin: 0;">PROJECT 159 - Truth Seeking Division</p>
+    </footer>
+</body>
+</html>

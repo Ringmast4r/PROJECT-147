@@ -1,17 +1,20 @@
-# PROJECT 147 - Data Sources
+# PROJECT 159 - Data Sources
 
 ## Overview
-This project contains 147 books across all biblical traditions with cross-reference data.
+This project contains 159 books across all biblical traditions with cross-reference data.
 
 ---
 
 ## Primary Cross-Reference Data
 
-### OpenBible.info Cross-References
+### OpenBible.info Cross-References + Expanded Non-Canonical
 - **File**: `data/cross-references/cross_references_88books.txt`
-- **Fresh Download**: `data/cross-references/cross_references.txt`
-- **Count**: 345,073 verse-to-verse cross-references
-- **Source**: https://www.openbible.info
+- **Expansion File**: `data/cross-references/expanded_noncanonical_refs.txt`
+- **Count**: 345,635 verse-to-verse cross-references
+  - 344,800 from OpenBible.info
+  - 400 Deuterocanonical (Wisdom, Sirach, Tobit, Judith, Baruch, 1-2 Maccabees)
+  - 399 Ethiopian/Pseudepigrapha (1 Enoch, Jubilees, 4 Ezra, T12 Patriarchs, 3-4 Maccabees, Psalms of Solomon)
+- **Source**: https://www.openbible.info + scholarly additions
 - **GitHub**: https://github.com/openbibleinfo
 - **License**: CC-BY
 - **Format**: Tab-separated (From Verse, To Verse, Votes)
@@ -133,7 +136,7 @@ This project contains 147 books across all biblical traditions with cross-refere
 
 ---
 
-## 147-Book Breakdown
+## 159-Book Breakdown
 
 | Category | Count | Source |
 |----------|-------|--------|
@@ -143,8 +146,8 @@ This project contains 147 books across all biblical traditions with cross-refere
 | Ethiopian/Pseudepigrapha | 21 | Various |
 | Dead Sea Scrolls | 10 | Qumran texts |
 | Gnostic/Early Christian | 22 | Nag Hammadi, etc. |
-| Lost Books | 14 | Referenced only |
-| **Total** | **147** | |
+| Lost Books | 26 | Referenced only |
+| **Total** | **159** | |
 
 ---
 
@@ -173,6 +176,6 @@ These connect NT to non-canonical texts:
 
 ---
 
-*PROJECT 147 | Truth Seeking Division*
+*PROJECT 159 | Truth Seeking Division*
 *Last Updated: 2025-11-24*
 *Creator: @Ringmast4r*

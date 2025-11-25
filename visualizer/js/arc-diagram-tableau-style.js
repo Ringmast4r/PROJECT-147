@@ -9,18 +9,18 @@ class ArcDiagramTableauStyle {
         this.svg = null;
         this.tooltip = null;
         this.width = 0;
-        this.height = 1400;
-        this.margin = { top: 120, right: 100, bottom: 200, left: 100 };
+        this.height = 1300;
+        this.margin = { top: 60, right: 50, bottom: 200, left: 50 };
         this.densificationPoints = 50; // Points per arc for smooth curves
 
-        // Color scheme for all 147 book categories
+        // Color scheme for all 159 book categories
         this.canonColors = {
             'Protestant': { OT: '#2ecc71', NT: '#00CED1' },  // Green for OT, Cyan for NT
             'Deuterocanonical': '#9370DB',  // Purple
             'Ethiopian': '#ff6b9d',  // Pink
             'Dead Sea Scrolls': '#00BFFF',  // Blue
-            'Gnostic': '#ff4444',  // Red
-            'Lost': '#ffa500'  // Orange
+            'Gnostic': '#888888',  // Gray (visible on dark bg, matches black arcs)
+            'Lost': '#FFD700'  // Gold
         };
 
         // Store for non-canonical cross-references from CrossRefLoader
@@ -102,8 +102,30 @@ class ArcDiagramTableauStyle {
             'Ahijah': 'Prophecy of Ahijah', 'Iddo': 'Visions of Iddo the Seer',
             'Shemaiah': 'Book of Shemaiah', 'Jehu': 'Book of Jehu',
             'SaySeers': 'Sayings of the Seers', 'EpLaod': 'Epistle to Laodiceans',
-            'EarlierCor': 'Earlier Epistle to Corinthians'
+            'EarlierCor': 'Earlier Epistle to Corinthians',
+            'SevereCor': 'Severe Letter to Corinthians', 'AnnDavid': 'Annals of King David',
+            'MannerKing': 'Manner of the Kingdom', 'ActsUzziah': 'Acts of Uzziah by Isaiah',
+            'LamentsJos': 'Laments for Josiah', 'StoryIddo': 'Story of Prophet Iddo',
+            'BkKingsIJ': 'Book of Kings of Israel & Judah', 'CommKings': 'Commentary on Book of Kings',
+            'AssumpMos': 'Assumption of Moses', 'PrayerMan': 'Prayer of Manasseh (source)',
+            'VisIddo': 'Visions of Iddo (Jeroboam)'
         };
+    }
+
+    /**
+     * Get short abbreviation for a book name (for compact labels)
+     */
+    getBookAbbrev(bookName) {
+        const abbrevMap = this.getBookAbbrevMap();
+        // Reverse lookup: find abbreviation for full name
+        for (const [abbrev, name] of Object.entries(abbrevMap)) {
+            if (name === bookName) return abbrev;
+        }
+        // Fallback: truncate long names
+        if (bookName.length > 6) {
+            return bookName.substring(0, 5) + '.';
+        }
+        return bookName;
     }
 
     /**
@@ -230,6 +252,9 @@ class ArcDiagramTableauStyle {
         // Generate arc paths for non-canonical connections using ACTUAL chapter positions
         const arcPaths = [];
 
+        // Max arc height for non-canonical arcs (above rainbow but not excessive)
+        const maxArcHeight = 550;
+
         nonCanonConnections.forEach(conn => {
             // Use actual source and target indices (both exist in chapters array)
             const sourceIdx = conn.sourceIdx;
@@ -238,17 +263,28 @@ class ArcDiagramTableauStyle {
             const start = Math.min(sourceIdx, targetIdx);
             const end = Math.max(sourceIdx, targetIdx);
             const distance = Math.abs(targetIdx - sourceIdx);
-            const radius = distance / 2;
 
             if (distance === 0) return;
 
-            // Use the same xScale as regular arcs (positions are within chapters array)
-            const pathPoints = this.generateCircularArcPath(
-                start, end, radius, xScale, innerHeight
-            );
+            // Get x positions
+            const x1 = xScale(start);
+            const x2 = xScale(end);
+            const spanWidth = Math.abs(x2 - x1);
+
+            // Calculate arc height - cap it but scale properly
+            const naturalHeight = distance / 2;
+            const arcHeight = Math.min(naturalHeight, maxArcHeight);
+
+            // For SVG arc: rx, ry are radii. Use spanWidth/2 for rx, arcHeight for ry
+            const rx = spanWidth / 2;
+            const ry = arcHeight;
 
             arcPaths.push({
-                points: pathPoints,
+                x1: x1,
+                x2: x2,
+                rx: rx,
+                ry: ry,
+                arcHeight: arcHeight,
                 distance: distance,
                 sourceIdx: sourceIdx,
                 targetIdx: targetIdx,
@@ -262,12 +298,23 @@ class ArcDiagramTableauStyle {
             });
         });
 
+        // Sort non-canonical arcs: by type first (Red/Deuterocanonical last = on top), then by distance
+        const typeOrder = { 'Ethiopian': 0, 'Lost': 1, 'Gnostic': 2, 'Deuterocanonical': 3 };
+        arcPaths.sort((a, b) => {
+            // First by type (lower order draws first/behind, higher draws on top)
+            const typeA = typeOrder[a.targetType] || 0;
+            const typeB = typeOrder[b.targetType] || 0;
+            if (typeA !== typeB) return typeA - typeB;
+            // Then by distance within same type (longest first)
+            return b.distance - a.distance;
+        });
+
         console.log(`Drawing ${arcPaths.length} non-canonical arcs (color-coded by type)`);
 
         // Color scheme for different non-canonical types
         const typeColors = {
             'Deuterocanonical': { stroke: '#FF0000', glow: '#FF0000', label: 'RED' },
-            'Ethiopian': { stroke: '#FF0000', glow: '#FF0000', label: 'RED' },
+            'Ethiopian': { stroke: '#ff6b9d', glow: '#ff6b9d', label: 'PINK' },
             'Gnostic': { stroke: '#000000', glow: '#333333', label: 'BLACK' },
             'Lost': { stroke: '#FFD700', glow: '#FFD700', label: 'GOLD' }
         };
@@ -279,29 +326,37 @@ class ArcDiagramTableauStyle {
         });
         console.log('  Arc counts by type:', typeCounts);
 
-        // Draw the arcs with type-based colors
+        // Filter out invalid arcs (very small or zero dimensions)
+        const validArcPaths = arcPaths.filter(d => d.rx > 5 && d.ry > 5 && d.x1 !== d.x2);
+
+        // Draw the arcs with type-based colors using SVG arc commands
         const nonCanonArcs = g.append('g')
             .attr('class', 'non-canonical-arcs')
             .selectAll('path')
-            .data(arcPaths)
+            .data(validArcPaths)
             .enter()
             .append('path')
-            .attr('d', d => this.createPathString(d.points))
+            .attr('d', d => {
+                // SVG arc: M x1,y1 A rx,ry rotation large-arc-flag sweep-flag x2,y2
+                // Ensure x1 < x2 for consistent arc direction (upward)
+                const y = innerHeight;
+                const startX = Math.min(d.x1, d.x2);
+                const endX = Math.max(d.x1, d.x2);
+                return `M ${startX},${y} A ${d.rx},${d.ry} 0 0 1 ${endX},${y}`;
+            })
             .attr('fill', 'none')
             .attr('stroke', d => {
                 const colors = typeColors[d.targetType] || typeColors['Deuterocanonical'];
                 return colors.stroke;
             })
-            .attr('stroke-width', d => d.targetType === 'Lost' ? 3 : 2.5)
-            .attr('opacity', d => d.targetType === 'Gnostic' ? 0.7 : 0.9)
-            .style('filter', d => {
-                const colors = typeColors[d.targetType] || typeColors['Deuterocanonical'];
-                return `drop-shadow(0 0 6px ${colors.glow})`;
-            })
+            .attr('stroke-width', d => d.targetType === 'Lost' ? 2.5 : 2)
+            .attr('opacity', d => d.targetType === 'Gnostic' ? 0.7 : 0.85)
+            .style('cursor', 'pointer')
             .on('mouseover', (event, d) => {
                 const colors = typeColors[d.targetType] || typeColors['Deuterocanonical'];
 
-                d3.select(event.target)
+                // Bring to front and highlight
+                d3.select(event.target).raise()
                     .attr('stroke-width', 6)
                     .attr('opacity', 1)
                     .style('filter', `drop-shadow(0 0 12px ${colors.glow})`);
@@ -315,24 +370,25 @@ class ArcDiagramTableauStyle {
                 const typeEmoji = d.targetType === 'Gnostic' ? '⚫' : d.targetType === 'Lost' ? '🟡' : '🔴';
                 const typeLabel = d.targetType === 'Gnostic' ? 'GNOSTIC' : d.targetType === 'Lost' ? 'LOST TEXT' : 'NON-CANONICAL';
                 const borderColor = colors.stroke === '#000000' ? '#444' : colors.stroke;
+                const textColor = colors.stroke === '#000000' ? '#888' : colors.stroke;
 
                 this.tooltip
                     .style('display', 'block')
                     .style('opacity', 1)
                     .html(`
                         <div style="border-bottom: 2px solid ${borderColor}; padding-bottom: 8px; margin-bottom: 8px;">
-                            <strong style="color: ${colors.stroke === '#000000' ? '#888' : colors.stroke}; font-size: 1.1em;">${typeEmoji} ${typeLabel} Cross-Reference</strong>
+                            <strong style="color: ${textColor}; font-size: 1.1em;">${typeEmoji} ${typeLabel} Cross-Reference</strong>
                         </div>
                         <div style="margin-bottom: 6px;">
                             <strong style="color: #00CED1;">From:</strong> ${d.sourceBook} ${d.sourceChapter}
                             ${ntText}
                         </div>
                         <div style="margin-bottom: 6px;">
-                            <strong style="color: ${colors.stroke === '#000000' ? '#888' : colors.stroke};">To:</strong> ${d.targetBook} ${d.targetChapter}
+                            <strong style="color: ${textColor};">To:</strong> ${d.targetBook} ${d.targetChapter}
                             ${targetText}
                         </div>
                         <div style="display: flex; gap: 15px; margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.2);">
-                            <span><strong>Type:</strong> <span style="color: ${colors.stroke === '#000000' ? '#888' : colors.stroke};">${d.targetType}</span></span>
+                            <span><strong>Type:</strong> <span style="color: ${textColor};">${d.targetType}</span></span>
                             <span><strong>Votes:</strong> <span style="color: #FFD700;">${d.weight}</span></span>
                             <span><strong>Distance:</strong> ${d.distance} chapters</span>
                         </div>
@@ -344,9 +400,9 @@ class ArcDiagramTableauStyle {
                 const colors = typeColors[d.targetType] || typeColors['Deuterocanonical'];
 
                 d3.select(event.target)
-                    .attr('stroke-width', d.targetType === 'Lost' ? 3 : 2.5)
-                    .attr('opacity', d.targetType === 'Gnostic' ? 0.7 : 0.9)
-                    .style('filter', `drop-shadow(0 0 6px ${colors.glow})`);
+                    .attr('stroke-width', d.targetType === 'Lost' ? 2.5 : 2)
+                    .attr('opacity', d.targetType === 'Gnostic' ? 0.7 : 0.85)
+                    .style('filter', 'none');
                 this.tooltip.style('display', 'none');
             });
 
@@ -425,14 +481,96 @@ class ArcDiagramTableauStyle {
         });
 
         // X scale: chapter position with edge padding
-        // Padding creates buffer space beyond first/last chapters for smooth edge curves
-        const edgePadding = 50; // pixels beyond edge chapters
-        const xScale = d3.scaleLinear()
-            .domain([0, chapters.length - 1])
-            .range([edgePadding, innerWidth - edgePadding]);
+        // Give extra space to Gnostic and Lost books at the end for readability
+        const edgePadding = 50;
 
-        // Rainbow color scale based on distance between chapters
-        const maxDistance = chapters.length - 1;
+        // Find where Gnostic books start (they come after DSS)
+        const gnosticStartIdx = chapters.findIndex(ch => ch.canon === 'Gnostic');
+        const lostStartIdx = chapters.findIndex(ch => ch.canon === 'Lost');
+
+        // Count chapters in each section
+        const mainChapters = gnosticStartIdx > 0 ? gnosticStartIdx : chapters.length;
+
+        // Build book position maps for Gnostic and Lost sections
+        // Each book gets EQUAL space regardless of chapter count
+        const gnosticBookList = [];
+        const lostBookList = [];
+        const bookStartIdx = new Map(); // Maps book name to its start index
+
+        let currentBook = null;
+        chapters.forEach((ch, idx) => {
+            if (ch.book !== currentBook) {
+                currentBook = ch.book;
+                bookStartIdx.set(ch.book, idx);
+                if (ch.canon === 'Gnostic') {
+                    gnosticBookList.push({ name: ch.book, startIdx: idx });
+                } else if (ch.canon === 'Lost') {
+                    lostBookList.push({ name: ch.book, startIdx: idx });
+                }
+            }
+        });
+
+        // Build chapter-to-book-position map for non-canonical sections
+        const chapterToBookPos = new Map();
+        gnosticBookList.forEach((book, bookIdx) => {
+            // Find all chapters for this book
+            chapters.forEach((ch, chIdx) => {
+                if (ch.book === book.name) {
+                    chapterToBookPos.set(chIdx, { section: 'gnostic', bookIdx, totalBooks: gnosticBookList.length });
+                }
+            });
+        });
+        lostBookList.forEach((book, bookIdx) => {
+            chapters.forEach((ch, chIdx) => {
+                if (ch.book === book.name) {
+                    chapterToBookPos.set(chIdx, { section: 'lost', bookIdx, totalBooks: lostBookList.length });
+                }
+            });
+        });
+
+        console.log(`Section counts - Gnostic: ${gnosticBookList.length} books, Lost: ${lostBookList.length} books`);
+
+        // Allocate width: 55% main, then split remaining 45% proportionally by BOOK count
+        const mainWidthPct = 0.55;
+        const nonCanonWidthPct = 0.45;
+        const totalNonCanonBooks = gnosticBookList.length + lostBookList.length;
+        const gnosticWidthPct = totalNonCanonBooks > 0 ? nonCanonWidthPct * (gnosticBookList.length / totalNonCanonBooks) : 0.225;
+        const lostWidthPct = totalNonCanonBooks > 0 ? nonCanonWidthPct * (lostBookList.length / totalNonCanonBooks) : 0.225;
+
+        console.log(`Width allocation - Main: ${(mainWidthPct*100).toFixed(1)}%, Gnostic: ${(gnosticWidthPct*100).toFixed(1)}%, Lost: ${(lostWidthPct*100).toFixed(1)}%`);
+
+        // Create custom scale that positions chapters by BOOK (not chapter) within non-canonical sections
+        const xScale = (idx) => {
+            const totalWidth = innerWidth - (2 * edgePadding);
+
+            // Check if this chapter is in a non-canonical section
+            const bookPos = chapterToBookPos.get(idx);
+
+            if (!bookPos) {
+                // Main section: Protestant, Deuterocanonical, Ethiopian, DSS
+                const normalWidth = totalWidth * mainWidthPct;
+                return edgePadding + (idx / mainChapters) * normalWidth;
+            } else if (bookPos.section === 'lost') {
+                // Lost books - position by book index, all chapters of same book at same X
+                const lostWidth = totalWidth * lostWidthPct;
+                const lostStartX = edgePadding + totalWidth * (mainWidthPct + gnosticWidthPct);
+                // Each book gets equal width
+                const bookWidth = lostWidth / bookPos.totalBooks;
+                return lostStartX + (bookPos.bookIdx + 0.5) * bookWidth;
+            } else {
+                // Gnostic books - position by book index, all chapters of same book at same X
+                const gnosticWidth = totalWidth * gnosticWidthPct;
+                const gnosticStartX = edgePadding + totalWidth * mainWidthPct;
+                // Each book gets equal width
+                const bookWidth = gnosticWidth / bookPos.totalBooks;
+                return gnosticStartX + (bookPos.bookIdx + 0.5) * bookWidth;
+            }
+        };
+
+        // Rainbow color scale based on OT↔NT distance (1189 canonical chapters)
+        // Use fixed canonical distance so colors don't change when extra books are added
+        const canonicalChapters = 1189; // 66-book Protestant canon
+        const maxDistance = canonicalChapters - 1;
         const rainbowColorScale = d3.scaleSequential(d3.interpolateRainbow)
             .domain([0, maxDistance]);
 
@@ -447,7 +585,7 @@ class ArcDiagramTableauStyle {
 
             if (sourceIdx === undefined || targetIdx === undefined) return;
 
-            // Calculate arc parameters (Tableau formulas)
+            // Calculate arc parameters (original Tableau formulas)
             const start = Math.min(sourceIdx, targetIdx);
             const end = Math.max(sourceIdx, targetIdx);
             const distance = Math.abs(targetIdx - sourceIdx);
@@ -456,7 +594,7 @@ class ArcDiagramTableauStyle {
             // Skip if same chapter
             if (distance === 0) return;
 
-            // Generate arc path using trigonometric formula
+            // Generate arc path using original point-by-point method
             const pathPoints = this.generateCircularArcPath(
                 start, end, radius, xScale, innerHeight
             );
@@ -476,13 +614,21 @@ class ArcDiagramTableauStyle {
 
         console.log(`Generated ${arcPaths.length} arc paths`);
 
-        console.log(`Drawing ${arcPaths.length} canonical arcs (rainbow) + non-canonical arcs (red) from CrossRefLoader`);
+        // Sort arcs by distance (longest first) for proper layering
+        // This creates the classic Chris Harrison look where shorter arcs appear on top
+        arcPaths.sort((a, b) => b.distance - a.distance);
 
-        // Draw canonical arcs (rainbow colors)
+        // Only filter out arcs with no points
+        const validRainbowArcs = arcPaths.filter(d => d.points && d.points.length > 0);
+
+        console.log(`Drawing ${validRainbowArcs.length} rainbow arcs + non-canonical arcs...`);
+
+        // Draw canonical arcs (rainbow colors) FIRST - in the back
+        // Using original point-by-point path for smooth rendering
         const arcs = g.append('g')
             .attr('class', 'arcs')
             .selectAll('path')
-            .data(arcPaths)
+            .data(validRainbowArcs)
             .enter()
             .append('path')
             .attr('d', d => this.createPathString(d.points))
@@ -490,12 +636,38 @@ class ArcDiagramTableauStyle {
             .attr('stroke', d => rainbowColorScale(d.distance))
             .attr('stroke-width', 0.5)
             .attr('opacity', 0.6)
-            .on('mouseover', (event, d) => this.showTooltip(event, d, chapters))
-            .on('mouseout', () => this.hideTooltip());
+            .style('cursor', 'pointer')
+            .on('mouseover', function(event, d) {
+                // Bring to front and highlight
+                d3.select(this).raise()
+                    .attr('stroke-width', 3)
+                    .attr('opacity', 1);
+                // Show tooltip
+                const tooltip = d3.select('#arc-tooltip');
+                const sourceChapter = chapters.find(ch => ch.id === d.source);
+                const targetChapter = chapters.find(ch => ch.id === d.target);
+                tooltip
+                    .style('display', 'block')
+                    .style('left', (event.clientX + 10) + 'px')
+                    .style('top', (event.clientY - 10) + 'px')
+                    .html(`
+                        <strong>📖 Cross-Reference</strong><br/>
+                        Source: ${sourceChapter ? sourceChapter.book + ' ' + sourceChapter.chapter : d.source}<br/>
+                        Target: ${targetChapter ? targetChapter.book + ' ' + targetChapter.chapter : d.target}<br/>
+                        Distance: ${d.distance} chapters
+                    `);
+            })
+            .on('mouseout', function() {
+                // Reset style
+                d3.select(this)
+                    .attr('stroke-width', 0.5)
+                    .attr('opacity', 0.6);
+                d3.select('#arc-tooltip').style('display', 'none');
+            });
 
-        // Draw NON-CANONICAL arcs in SOLID RED from CrossRefLoader data
+        // Draw NON-CANONICAL arcs SECOND - in the front (red/black/gold)
         const numNonCanonArcs = this.drawNonCanonicalArcs(g, chapters, xScale, innerHeight, chapterIndexMap);
-        console.log(`Drew ${numNonCanonArcs || 0} red arcs for non-canonical cross-references`);
+        console.log(`Drew ${numNonCanonArcs || 0} non-canonical arcs (red/black/gold)`);
 
         // Draw chapter indicators at bottom with hover labels
         const chapterBars = g.append('g')
@@ -513,6 +685,7 @@ class ArcDiagramTableauStyle {
             .attr('font-weight', 'bold')
             .style('opacity', 0);
 
+        // Color by canon type
         const self = this;
         chapterBars.selectAll('line')
             .data(chapters)
@@ -696,7 +869,7 @@ class ArcDiagramTableauStyle {
             }
         });
 
-        // Draw slanted book labels with canon-appropriate colors
+        // Draw slanted book labels - use actual positions so arcs land on labels
         bookLabelsGroup.selectAll('.book-label')
             .data(bookGroups)
             .enter()
@@ -706,11 +879,11 @@ class ArcDiagramTableauStyle {
             .attr('y', 55)
             .attr('text-anchor', 'start')
             .attr('fill', d => self.getChapterColor({ testament: d.testament, canon: d.canon }))
-            .attr('font-size', '10px')
+            .attr('font-size', '7px')
             .attr('font-weight', 'bold')
             .attr('transform', d => {
                 const x = xScale(d.start);
-                return `rotate(-45, ${x}, 55)`;
+                return `rotate(-60, ${x}, 55)`;
             })
             .text(d => d.book)
             .style('cursor', 'pointer')
@@ -721,7 +894,7 @@ class ArcDiagramTableauStyle {
             })
             .on('mouseout', function(event, d) {
                 d3.select(this)
-                    .attr('font-size', '10px')
+                    .attr('font-size', '7px')
                     .attr('fill', self.getChapterColor({ testament: d.testament, canon: d.canon }));
             });
     }
@@ -790,7 +963,7 @@ class ArcDiagramTableauStyle {
     }
 
     /**
-     * Draw canon color legend showing all 147 book categories
+     * Draw canon color legend showing all 159 book categories
      */
     drawCanonLegend(g, legendX, legendY) {
         const legendItems = [
@@ -800,7 +973,7 @@ class ArcDiagramTableauStyle {
             { label: 'Ethiopian (21)', color: this.canonColors.Ethiopian },
             { label: 'Dead Sea Scrolls (10)', color: this.canonColors['Dead Sea Scrolls'] },
             { label: 'Gnostic (22)', color: this.canonColors.Gnostic },
-            { label: 'Lost (14)', color: this.canonColors.Lost },
+            { label: 'Lost (26)', color: this.canonColors.Lost },
             { label: '🔴 Non-Canon Refs', color: '#FF0000' }
         ];
 
@@ -814,7 +987,7 @@ class ArcDiagramTableauStyle {
             .attr('fill', '#FFD700')
             .attr('font-size', '12px')
             .attr('font-weight', 'bold')
-            .text('147 Books by Canon:');
+            .text('159 Books by Canon:');
 
         legendItems.forEach((item, i) => {
             const row = Math.floor(i / 4);

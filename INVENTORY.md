@@ -1,7 +1,7 @@
-# PROJECT 147 - Data Inventory
+# PROJECT 159 - Data Inventory
 
 **Date**: November 24, 2025
-**Status**: Complete - 147 Books + 344,800 Cross-References
+**Status**: Complete - 159 Books + 345,635 Cross-References
 
 ---
 
@@ -9,7 +9,7 @@
 
 | Dataset | Size | Books/Texts | Format | Source |
 |---------|------|-------------|--------|--------|
-| OpenBible Cross-References | ~15 MB | 344,800 refs | TXT | openbible.info |
+| OpenBible Cross-References | ~15 MB | 345,635 refs | TXT | openbible.info |
 | Pseudepigrapha Collection | ~5 MB | 39+ texts | XML | OnlineCriticalPseudepigrapha |
 | Scrollmapper Extra-Biblical | ~579 MB | 974 texts | SQL/TXT | scrollmapper (2024 branch) |
 | Theographic Bible Metadata | ~10 MB | 10 datasets | JSON | robertrouse |
@@ -27,8 +27,9 @@
 - **Website**: https://www.openbible.info
 - **GitHub**: https://github.com/openbibleinfo
 - **Files**:
-  - `cross_references_88books.txt` - Original download (345,073 refs)
+  - `cross_references_88books.txt` - Expanded dataset (345,635 refs)
   - `cross_references_fresh_2025-11-24.txt` - Fresh download (344,800 refs)
+  - `expanded_noncanonical_refs.txt` - Added 562 Deuterocanonical & Ethiopian refs
 - **Format**: Tab-separated (From Verse, To Verse, Votes)
 - **License**: CC-BY
 - **GitHub Repositories**:

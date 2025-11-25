@@ -1,28 +1,30 @@
-# PROJECT 147 - Biblical Cross-Reference Visualizer
+# PROJECT 159 - Biblical Cross-Reference Visualizer
 
 **Date**: November 24, 2025
-**Status**: Phase 3 Complete - 147-Book Visualization Live
+**Status**: Phase 3 Complete - 159-Book Visualization Live
 
 ---
 
 ## 🆕 Latest Updates (Nov 24, 2025)
 
-### Arc Diagram Now Shows All 147 Books!
-- ✅ Created `data-augmenter-147.js` to extend 88-book data to 147 books
-- ✅ Added Dead Sea Scrolls (10), Gnostic (22), Lost (14) books
+### Arc Diagram Now Shows All 159 Books!
+- ✅ Created `data-augmenter-147.js` to extend 88-book data to 159 books
+- ✅ Added Dead Sea Scrolls (10), Gnostic (22), Lost (26) books
 - ✅ **Non-canonical cross-refs display in SOLID RED** with glow effect
 - ✅ Color-coded books by canon type in visualization
 - ✅ Updated tooltips to show canon information
 
 ### Data Sources Verified
-- ✅ **345,073 cross-references** from OpenBible.info preserved
+- ✅ **345,635 cross-references** (344,800 OpenBible + 835 expanded non-canonical)
+- ✅ **400 Deuterocanonical** cross-references (Wisdom, Sirach, Tobit, Judith, Baruch, Maccabees)
+- ✅ **399 Ethiopian/Pseudepigrapha** cross-references (1 Enoch, Jubilees, 4 Ezra, T12 Patriarchs)
 - ✅ Theographic Bible Metadata integrated
 - ✅ Church Fathers (37 volumes) available
 - ✅ All HTML files for DSS and Gnostic texts in place
 
 ---
 
-## 📊 147-Book Breakdown
+## 📊 159-Book Breakdown
 
 | Category | Count | Color |
 |----------|-------|-------|
@@ -31,9 +33,9 @@
 | Deuterocanonical | 14 | Purple (#9370DB) |
 | Ethiopian/Pseudepigrapha | 21 | Pink (#ff6b9d) |
 | Dead Sea Scrolls | 10 | Blue (#00BFFF) |
-| Gnostic/Early Christian | 22 | Red (#ff4444) |
-| Lost Books | 14 | Orange (#ffa500) |
-| **TOTAL** | **147** | |
+| Gnostic/Early Christian | 22 | Dark Red (#ff4444) |
+| Lost Books | 26 | Gold (#FFD700) |
+| **TOTAL** | **159** | |
 
 ---
 
@@ -60,7 +62,7 @@
 ### Primary Cross-Reference Data
 | Source | File | Count |
 |--------|------|-------|
-| OpenBible.info | `data/cross-references/cross_references_88books.txt` | 345,073 |
+| OpenBible.info + Expanded | `data/cross-references/cross_references_88books.txt` | 345,635 |
 | Processed Graph | `data/processed/graph_data_88books.json` | 143,207 connections |
 
 ### Bible Text Sources
@@ -85,9 +87,9 @@
 
 | Page | URL | Status |
 |------|-----|--------|
-| Arc Diagram | `/visualizer/arc-diagram.html` | Done - 147 books + red non-canon arcs |
+| Arc Diagram | `/visualizer/arc-diagram.html` | Done - 159 books + color-coded non-canon arcs |
 | Timeline | `/visualizer/timeline.html` | Done - Modal popup for reading |
-| Library | `/visualizer/library.html` | Done - All 147 books |
+| Library | `/visualizer/library.html` | Done - All 159 books |
 | History | `/visualizer/history.html` | Done - Canon history + Roman Catholic |
 | Cross-References | `/visualizer/table-view.html` | Done - Searchable table |
 
@@ -356,4 +358,4 @@ All data from open sources:
 
 **Last Updated**: November 24, 2025
 **Project Creator**: @Ringmast4r
-**Status**: PROJECT 147 - 147 Books Visualized
+**Status**: PROJECT 159 - 159 Books Visualized

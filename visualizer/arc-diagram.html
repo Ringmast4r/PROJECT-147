@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROJECT 147 - Biblical Cross-Reference Visualizer</title>
+    <title>PROJECT 159 - Biblical Cross-Reference Visualizer</title>
     <link rel="stylesheet" href="css/styles.css">
     <style>
         .header-custom {
@@ -128,7 +128,7 @@
             border-left-color: #00BFFF;
         }
         .book-item.gnostic {
-            border-left-color: #ff4444;
+            border-left-color: #888888;
         }
         .book-item.lost {
             border-left-color: #ffa500;
@@ -189,27 +189,233 @@
         }
         .type-badge.Deuterocanonical { background: rgba(147, 112, 219, 0.3); color: #9370DB; }
         .type-badge.Ethiopian { background: rgba(255, 107, 157, 0.3); color: #ff6b9d; }
-        .type-badge.Gnostic { background: rgba(255, 68, 68, 0.3); color: #ff4444; }
+        .type-badge.Gnostic { background: rgba(136, 136, 136, 0.3); color: #888888; }
         .type-badge.Lost { background: rgba(255, 165, 0, 0.3); color: #ffa500; }
+
+        /* Book items clickable */
+        .book-item {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .book-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        /* Text Viewer Modal */
+        .text-viewer-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            overflow-y: auto;
+        }
+        .text-viewer-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            margin: 2% auto;
+            padding: 30px;
+            border: 2px solid rgba(255, 107, 157, 0.5);
+            border-radius: 12px;
+            width: 90%;
+            max-width: 1200px;
+            box-shadow: 0 10px 40px rgba(255, 107, 157, 0.3);
+            position: relative;
+        }
+        .text-viewer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(255, 107, 157, 0.3);
+        }
+        .text-viewer-title {
+            color: var(--accent-gold);
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .close-viewer-btn {
+            background: rgba(255, 68, 68, 0.3);
+            border: 1px solid #ff4444;
+            color: white;
+            font-size: 24px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .close-viewer-btn:hover {
+            background: #ff4444;
+        }
+        .chapter-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .chapter-btn {
+            background: rgba(255, 107, 157, 0.2);
+            border: 1px solid rgba(255, 107, 157, 0.5);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .chapter-btn:hover:not(:disabled) {
+            background: rgba(255, 107, 157, 0.4);
+        }
+        .chapter-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .chapter-selector select {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--accent-gold);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .text-viewer-body {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            border-radius: 8px;
+            line-height: 1.8;
+            font-size: 1.05em;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        .verse {
+            margin: 8px 0;
+        }
+        .verse-num {
+            color: var(--accent-gold);
+            font-weight: bold;
+            margin-right: 8px;
+        }
     </style>
 </head>
 <body>
+    <!-- Navigation Menu -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="table-view.html" class="nav-logo">📜 PROJECT 159</a>
+            <button class="nav-toggle" onclick="toggleNav()">☰</button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="table-view.html" class="nav-link">📊 Cross-References</a></li>
+                <li><a href="arc-diagram.html" class="nav-link active">🌈 Arc Diagram</a></li>
+                <li><a href="library.html" class="nav-link">📚 Library</a></li>
+                <li><a href="timeline.html" class="nav-link">📅 Timeline</a></li>
+                <li><a href="history.html" class="nav-link">📖 History</a></li>
+                <li><a href="donate.html" class="nav-link">💛 Donate</a></li>
+            </ul>
+        </div>
+    </nav>
+    <style>
+        .main-nav {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-bottom: 2px solid rgba(255, 107, 157, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 0 20px;
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        .nav-logo {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #FFD700;
+            text-decoration: none;
+        }
+        .nav-logo:hover { color: #fff; }
+        .nav-links {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 10px;
+        }
+        .nav-link {
+            color: #ccc;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-size: 0.95em;
+        }
+        .nav-link:hover {
+            background: rgba(255, 107, 157, 0.2);
+            color: #fff;
+        }
+        .nav-link.active {
+            background: rgba(255, 107, 157, 0.3);
+            color: #FFD700;
+            border: 1px solid rgba(255, 107, 157, 0.5);
+        }
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: 2px solid #FFD700;
+            color: #FFD700;
+            font-size: 1.5em;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        @media (max-width: 768px) {
+            .nav-toggle { display: block; }
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: #1a1a2e;
+                flex-direction: column;
+                padding: 15px;
+                border-bottom: 2px solid rgba(255, 107, 157, 0.3);
+            }
+            .nav-links.active { display: flex; }
+            .nav-link { padding: 12px 15px; }
+        }
+    </style>
+    <script>
+        function toggleNav() {
+            document.getElementById('nav-links').classList.toggle('active');
+        }
+    </script>
+
     <div class="container">
         <!-- Custom Header -->
         <div class="header-custom">
-            <h1>📜 PROJECT 147 - Biblical Cross-Reference Visualizer</h1>
-            <p>147 Books Across All Biblical Traditions</p>
-            <p class="subtitle">Protestant 66 + Deuterocanonical 14 + Ethiopian 21 + Dead Sea Scrolls 10 + Gnostic 22 + Lost 14</p>
+            <h1>📜 PROJECT 159 - Biblical Cross-Reference Visualizer</h1>
+            <p>159 Books Across All Biblical Traditions</p>
+            <p class="subtitle">Protestant 66 + Deuterocanonical 14 + Ethiopian 21 + Dead Sea Scrolls 10 + Gnostic 22 + Lost 26</p>
         </div>
 
         <!-- Stats -->
         <div class="stats-grid">
             <div class="stat-card clickable" id="books-card" onclick="showBooksModal()">
-                <div class="stat-number">147</div>
+                <div class="stat-number">159</div>
                 <div class="stat-label">Total Books (Click to view)</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">344K+</div>
+                <div class="stat-number">345K+</div>
                 <div class="stat-label">Cross-References</div>
             </div>
             <div class="stat-card clickable" id="noncanon-card" onclick="showNonCanonModal()">
@@ -225,16 +431,16 @@
         <!-- Info Panel -->
         <div class="info-panel">
             <h2>About This Visualization</h2>
-            <p>This arc diagram shows cross-references between all 147 books across biblical traditions:</p>
+            <p>This arc diagram shows cross-references between all 159 books across biblical traditions:</p>
             <ul>
                 <li><strong style="color: #00CED1;">66 Protestant Books</strong> - Genesis through Revelation (OT 39 + NT 27)</li>
                 <li><strong style="color: #9370DB;">14 Deuterocanonical Books</strong> - Tobit, Judith, Wisdom, Sirach, Baruch, 1-2 Maccabees, Susanna, Bel & Dragon, Prayer of Azariah, Greek Esther, 1-2 Esdras, Prayer of Manasseh</li>
                 <li><strong style="color: #ff6b9d;">21 Ethiopian/Pseudepigrapha</strong> - 1-3 Enoch, Jubilees, 2-4 Baruch, 3-4 Maccabees, Testaments, and more</li>
                 <li><strong style="color: #00BFFF;">10 Dead Sea Scrolls</strong> - Community Rule, War Scroll, Temple Scroll, Damascus Document, and more from Qumran</li>
-                <li><strong style="color: #ff4444;">22 Gnostic/Early Christian</strong> - Gospel of Thomas, Gospel of Judas, Didache, Shepherd of Hermas, and more</li>
-                <li><strong style="color: #ffa500;">14 Lost Books</strong> - Referenced in Scripture but lost to history</li>
+                <li><strong style="color: #888888;">22 Gnostic/Early Christian</strong> - Gospel of Thomas, Gospel of Judas, Didache, Shepherd of Hermas, and more</li>
+                <li><strong style="color: #ffa500;">26 Lost Books</strong> - Referenced in Scripture but lost to history</li>
             </ul>
-            <p><strong>How to use:</strong> Hover over arcs to see connections. Click "147 Total Books" to see the complete list. Rainbow colors represent distance between connected chapters.</p>
+            <p><strong>How to use:</strong> Hover over arcs to see connections. Click "159 Total Books" to see the complete list. Rainbow colors represent distance between connected chapters.</p>
         </div>
 
         <!-- Controls -->
@@ -256,14 +462,14 @@
             </div>
 
             <button id="reset-btn" class="btn">Reset View</button>
-            <button id="theme-btn" class="btn btn-theme">🎨 Theme</button>
+            <button id="export-svg-btn" class="btn btn-theme">📥 Export SVG</button>
         </div>
 
         <!-- Visualization Area -->
         <div class="viz-container">
             <div id="arc-viz" class="viz-panel active">
                 <div class="viz-info">
-                    <h3>Arc Diagram - 147 Books</h3>
+                    <h3>Arc Diagram - 159 Books</h3>
                     <p>Visualization of cross-references using circular arcs. Rainbow gradient colors represent distance between connected chapters.</p>
                 </div>
                 <svg id="arc-svg"></svg>
@@ -280,14 +486,24 @@
             <div style="display: flex; gap: 25px; margin-bottom: 20px; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 8px; flex-wrap: wrap; align-items: center;">
                 <span style="font-weight: bold; color: var(--accent-gold);">Arc Legend:</span>
                 <div style="display: flex; align-items: center; gap: 8px;">
+                    <div style="width: 40px; height: 4px; background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3); border-radius: 2px;"></div>
+                    <span style="color: #ccc;">RAINBOW</span>
+                    <span style="color: #aaa;">= OT ↔ NT (distance)</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
                     <div style="width: 40px; height: 4px; background: #FF0000; border-radius: 2px; box-shadow: 0 0 8px #FF0000;"></div>
                     <span style="color: #FF0000;">RED</span>
-                    <span style="color: #aaa;">= Deuterocanonical & Ethiopian</span>
+                    <span style="color: #aaa;">= Deuterocanonical</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <div style="width: 40px; height: 4px; background: #ff6b9d; border-radius: 2px; box-shadow: 0 0 8px #ff6b9d;"></div>
+                    <span style="color: #ff6b9d;">PINK</span>
+                    <span style="color: #aaa;">= Ethiopian</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <div style="width: 40px; height: 4px; background: #000000; border-radius: 2px; box-shadow: 0 0 8px #333;"></div>
                     <span style="color: #888;">BLACK</span>
-                    <span style="color: #aaa;">= Gnostic/Early Christian</span>
+                    <span style="color: #aaa;">= Gnostic</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <div style="width: 40px; height: 4px; background: #FFD700; border-radius: 2px; box-shadow: 0 0 8px #FFD700;"></div>
@@ -306,8 +522,8 @@
                     <div id="inline-ethiopian-count" style="font-size: 2em; font-weight: bold; color: #ff6b9d;">0</div>
                     <div style="color: #aaa;">Ethiopian</div>
                 </div>
-                <div style="background: rgba(255, 68, 68, 0.2); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #ff4444;">
-                    <div id="inline-gnostic-count" style="font-size: 2em; font-weight: bold; color: #ff4444;">0</div>
+                <div style="background: rgba(136, 136, 136, 0.2); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #888;">
+                    <div id="inline-gnostic-count" style="font-size: 2em; font-weight: bold; color: #888;">0</div>
                     <div style="color: #aaa;">Gnostic</div>
                 </div>
                 <div style="background: rgba(255, 165, 0, 0.2); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #ffa500;">
@@ -325,7 +541,7 @@
                 <button class="inline-tab-btn" onclick="filterInlineTable('Ethiopian')" id="inline-tab-ethiopian"
                     style="padding: 8px 16px; background: rgba(255, 107, 157, 0.3); color: #ff6b9d; border: 1px solid #ff6b9d; border-radius: 4px; cursor: pointer;">Ethiopian</button>
                 <button class="inline-tab-btn" onclick="filterInlineTable('Gnostic')" id="inline-tab-gnostic"
-                    style="padding: 8px 16px; background: rgba(255, 68, 68, 0.3); color: #ff4444; border: 1px solid #ff4444; border-radius: 4px; cursor: pointer;">Gnostic</button>
+                    style="padding: 8px 16px; background: rgba(136, 136, 136, 0.3); color: #888; border: 1px solid #888; border-radius: 4px; cursor: pointer;">Gnostic</button>
                 <button class="inline-tab-btn" onclick="filterInlineTable('Lost')" id="inline-tab-lost"
                     style="padding: 8px 16px; background: rgba(255, 165, 0, 0.3); color: #ffa500; border: 1px solid #ffa500; border-radius: 4px; cursor: pointer;">Lost</button>
             </div>
@@ -365,7 +581,7 @@
     <div id="books-modal" class="modal">
         <div class="modal-content">
             <span class="modal-close" onclick="closeBooksModal()">&times;</span>
-            <h2 style="color: var(--accent-gold); margin-top: 0;">📚 Complete 147-Book Biblical Library</h2>
+            <h2 style="color: var(--accent-gold); margin-top: 0;">📚 Complete 159-Book Biblical Library</h2>
 
             <div class="canon-section">
                 <h3 style="color: #00CED1;">🔵 Protestant Canon (66 Books)</h3>
@@ -392,15 +608,36 @@
             </div>
 
             <div class="canon-section">
-                <h3 style="color: #ff4444;">🔺 Gnostic & Early Christian (22 Books)</h3>
+                <h3 style="color: #888888;">⚫ Gnostic & Early Christian (22 Books)</h3>
                 <p style="color: #aaa; margin-bottom: 10px;">Ancient texts rejected by mainstream Christianity</p>
                 <div class="books-grid" id="gnostic-books"></div>
             </div>
 
             <div class="canon-section">
-                <h3 style="color: #ffa500;">📜 Lost Books (14 Books)</h3>
+                <h3 style="color: #ffa500;">📜 Lost Books (26 Books)</h3>
                 <p style="color: #aaa; margin-bottom: 10px;">Referenced in Scripture but lost to history</p>
                 <div class="books-grid" id="lost-books"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Text Viewer Modal -->
+    <div id="text-viewer-modal" class="text-viewer-modal">
+        <div class="text-viewer-content">
+            <div class="text-viewer-header">
+                <h2 class="text-viewer-title" id="text-viewer-title">Book Title</h2>
+                <button class="close-viewer-btn" onclick="closeTextViewer()">&times;</button>
+            </div>
+            <div class="chapter-nav">
+                <button class="chapter-btn" id="prev-chapter-btn" onclick="prevChapter()">&#8592; Previous</button>
+                <div class="chapter-selector">
+                    <label>Chapter: </label>
+                    <select id="chapter-select" onchange="goToChapter(this.value)"></select>
+                </div>
+                <button class="chapter-btn" id="next-chapter-btn" onclick="nextChapter()">Next &#8594;</button>
+            </div>
+            <div class="text-viewer-body" id="text-viewer-body">
+                Loading...
             </div>
         </div>
     </div>
@@ -412,7 +649,8 @@
             <h2 style="color: #FF0000; margin-top: 0;">🔴 Non-Canonical Cross-References</h2>
             <p style="color: #ccc; margin-bottom: 15px;">These cross-references connect canonical Scripture to non-canonical texts.</p>
             <div style="display: flex; gap: 20px; margin-bottom: 20px; flex-wrap: wrap;">
-                <span><strong style="color: #FF0000;">🔴 RED</strong> = Deuterocanonical/Ethiopian</span>
+                <span><strong style="color: #FF0000;">🔴 RED</strong> = Deuterocanonical</span>
+                <span><strong style="color: #ff6b9d;">🩷 PINK</strong> = Ethiopian</span>
                 <span><strong style="color: #888;">⚫ BLACK</strong> = Gnostic</span>
                 <span><strong style="color: #FFD700;">🟡 GOLD</strong> = Lost Books</span>
             </div>
@@ -426,8 +664,8 @@
                     <div id="modal-ethiopian-count" style="font-size: 2em; font-weight: bold; color: #ff6b9d;">0</div>
                     <div style="color: #aaa;">Ethiopian</div>
                 </div>
-                <div style="background: rgba(255, 68, 68, 0.2); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #ff4444;">
-                    <div id="modal-gnostic-count" style="font-size: 2em; font-weight: bold; color: #ff4444;">0</div>
+                <div style="background: rgba(136, 136, 136, 0.2); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #888;">
+                    <div id="modal-gnostic-count" style="font-size: 2em; font-weight: bold; color: #888;">0</div>
                     <div style="color: #aaa;">Gnostic</div>
                 </div>
                 <div style="background: rgba(255, 165, 0, 0.2); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #ffa500;">
@@ -492,9 +730,9 @@
         // Initialize
         async function init() {
             try {
-                console.log('🔍 Initializing 147-Book Biblical Visualizer...');
+                console.log('🔍 Initializing 159-Book Biblical Visualizer...');
 
-                showLoading('Loading 147-book cross-reference data...');
+                showLoading('Loading 159-book cross-reference data...');
 
                 // Setup progress tracking
                 dataLoader.onProgress((percent, message) => {
@@ -559,15 +797,37 @@
                 }
             });
 
-            // Theme button
-            const themes = ['blackgold', 'professional', 'vibrant', 'matrix', 'sunset', 'royal', 'ocean'];
-            let currentThemeIndex = 0;
-            document.getElementById('theme-btn').addEventListener('click', () => {
-                currentThemeIndex = (currentThemeIndex + 1) % themes.length;
-                document.documentElement.setAttribute('data-theme', themes[currentThemeIndex]);
-                if (arcDiagram) {
-                    arcDiagram.render();
+            // Export SVG button
+            document.getElementById('export-svg-btn').addEventListener('click', () => {
+                const svgElement = document.getElementById('arc-svg');
+                if (!svgElement) {
+                    alert('No SVG to export');
+                    return;
                 }
+
+                // Clone the SVG to add styles
+                const svgClone = svgElement.cloneNode(true);
+
+                // Add background color
+                svgClone.style.backgroundColor = '#1a1a2e';
+
+                // Serialize to string
+                const serializer = new XMLSerializer();
+                let svgString = serializer.serializeToString(svgClone);
+
+                // Add XML declaration and DOCTYPE
+                svgString = '<?xml version="1.0" encoding="UTF-8"?>\n' + svgString;
+
+                // Create blob and download
+                const blob = new Blob([svgString], { type: 'image/svg+xml' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'bible-cross-references-159books.svg';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
             });
         }
 
@@ -596,7 +856,7 @@
             }
         }
 
-        // Books Modal - All 147 Books
+        // Books Modal - All 159 Books
         const booksData = {
             protestant: [
                 // Old Testament (39 books)
@@ -649,53 +909,59 @@
                 {name: 'Apocalypse of Peter', chapters: 1}
             ],
             lost: [
-                {name: 'Book of the Wars of the Lord', chapters: '?'}, {name: 'Book of the Annals of Solomon', chapters: '?'},
-                {name: 'Book of the Annals of the Kings of Israel', chapters: '?'}, {name: 'Book of the Annals of the Kings of Judah', chapters: '?'},
-                {name: 'Book of Samuel the Seer', chapters: '?'}, {name: 'Book of Nathan the Prophet', chapters: '?'},
-                {name: 'Book of Gad the Seer', chapters: '?'}, {name: 'Prophecy of Ahijah', chapters: '?'},
-                {name: 'Visions of Iddo the Seer', chapters: '?'}, {name: 'Book of Shemaiah', chapters: '?'},
+                {name: 'Book of the Wars of the Lord', chapters: '?'}, {name: 'Book of Jasher (Lost)', chapters: '?'},
+                {name: 'Annals of Solomon', chapters: '?'}, {name: 'Annals of King David', chapters: '?'},
+                {name: 'Annals of Kings of Israel', chapters: '?'}, {name: 'Annals of Kings of Judah', chapters: '?'},
+                {name: 'Book of Kings of Israel & Judah', chapters: '?'}, {name: 'Book of Samuel the Seer', chapters: '?'},
+                {name: 'Book of Nathan the Prophet', chapters: '?'}, {name: 'Book of Gad the Seer', chapters: '?'},
+                {name: 'Prophecy of Ahijah', chapters: '?'}, {name: 'Visions of Iddo the Seer', chapters: '?'},
+                {name: 'Story of Prophet Iddo', chapters: '?'}, {name: 'Book of Shemaiah', chapters: '?'},
                 {name: 'Book of Jehu', chapters: '?'}, {name: 'Sayings of the Seers', chapters: '?'},
-                {name: 'Epistle to the Laodiceans', chapters: '?'}, {name: 'Earlier Epistle to Corinthians', chapters: '?'}
+                {name: 'Acts of Uzziah by Isaiah', chapters: '?'}, {name: 'Laments for Josiah', chapters: '?'},
+                {name: 'Commentary on Book of Kings', chapters: '?'}, {name: 'Manner of the Kingdom', chapters: '?'},
+                {name: 'Epistle to the Laodiceans', chapters: '?'}, {name: 'Earlier Epistle to Corinthians', chapters: '?'},
+                {name: 'Severe Letter to Corinthians', chapters: '?'}, {name: 'Assumption of Moses', chapters: '?'},
+                {name: 'Prayer of Manasseh (source)', chapters: '?'}, {name: 'Visions of Iddo (Jeroboam)', chapters: '?'}
             ]
         };
 
         function showBooksModal() {
             const modal = document.getElementById('books-modal');
 
-            // Populate Protestant books
+            // Populate Protestant books (clickable)
             const protestantDiv = document.getElementById('protestant-books');
             protestantDiv.innerHTML = booksData.protestant.map(book =>
-                `<div class="book-item protestant"><strong>${book.name}</strong><br/><small>${book.chapters} chapters</small></div>`
+                `<div class="book-item protestant" onclick="openTextViewer('${book.name}', ${typeof book.chapters === 'number' ? book.chapters : 1})"><strong>${book.name}</strong><br/><small>${book.chapters} chapters - Click to read</small></div>`
             ).join('');
 
-            // Populate Deuterocanonical books
+            // Populate Deuterocanonical books (clickable)
             const deuteroDiv = document.getElementById('deutero-books');
             deuteroDiv.innerHTML = booksData.deuterocanonical.map(book =>
-                `<div class="book-item deuterocanonical"><strong>${book.name}</strong><br/><small>${book.chapters} chapters</small></div>`
+                `<div class="book-item deuterocanonical" onclick="openTextViewer('${book.name}', ${typeof book.chapters === 'number' ? book.chapters : 1})"><strong>${book.name}</strong><br/><small>${book.chapters} chapters - Click to read</small></div>`
             ).join('');
 
-            // Populate Ethiopian books
+            // Populate Ethiopian books (clickable)
             const ethiopianDiv = document.getElementById('ethiopian-books');
             ethiopianDiv.innerHTML = booksData.ethiopian.map(book =>
-                `<div class="book-item ethiopian"><strong>${book.name}</strong><br/><small>${book.chapters} chapters</small></div>`
+                `<div class="book-item ethiopian" onclick="openTextViewer('${book.name}', ${typeof book.chapters === 'number' ? book.chapters : 1})"><strong>${book.name}</strong><br/><small>${book.chapters} chapters - Click to read</small></div>`
             ).join('');
 
-            // Populate Dead Sea Scrolls
+            // Populate Dead Sea Scrolls (clickable)
             const dssDiv = document.getElementById('dss-books');
             dssDiv.innerHTML = booksData.deadSeaScrolls.map(book =>
-                `<div class="book-item dss"><strong>${book.name}</strong><br/><small>${book.chapters} chapters</small></div>`
+                `<div class="book-item dss" onclick="openTextViewer('${book.name}', ${typeof book.chapters === 'number' ? book.chapters : 1})"><strong>${book.name}</strong><br/><small>${book.chapters} chapters - Click to read</small></div>`
             ).join('');
 
-            // Populate Gnostic books
+            // Populate Gnostic books (clickable)
             const gnosticDiv = document.getElementById('gnostic-books');
             gnosticDiv.innerHTML = booksData.gnostic.map(book =>
-                `<div class="book-item gnostic"><strong>${book.name}</strong><br/><small>${book.chapters} chapters</small></div>`
+                `<div class="book-item gnostic" onclick="openTextViewer('${book.name}', ${typeof book.chapters === 'number' ? book.chapters : 1})"><strong>${book.name}</strong><br/><small>${book.chapters} chapters - Click to read</small></div>`
             ).join('');
 
-            // Populate Lost books
+            // Populate Lost books (clickable - will show lost message)
             const lostDiv = document.getElementById('lost-books');
             lostDiv.innerHTML = booksData.lost.map(book =>
-                `<div class="book-item lost"><strong>${book.name}</strong><br/><small>Lost to history</small></div>`
+                `<div class="book-item lost" onclick="openTextViewer('${book.name}', 1)"><strong>${book.name}</strong><br/><small>Lost to history - Click for info</small></div>`
             ).join('');
 
             modal.style.display = 'block';
@@ -703,6 +969,262 @@
 
         function closeBooksModal() {
             document.getElementById('books-modal').style.display = 'none';
+        }
+
+        // ========== TEXT VIEWER FUNCTIONS ==========
+
+        // Book text sources configuration
+        const bookTextSources = {
+            // Gnostic Gospels - Local HTML Files
+            'Gospel of Judas': { type: 'localHtml', file: 'gospel-of-judas.html', chapters: 1 },
+            'Gospel of Thomas': { type: 'localHtml', file: 'gospel-of-thomas.html', chapters: 1 },
+            'Gospel of Mary': { type: 'localHtml', file: 'gospel-of-mary.html', chapters: 1 },
+            'Gospel of Peter': { type: 'localHtml', file: 'gospel-of-peter.html', chapters: 1 },
+            'Gospel of Philip': { type: 'localHtml', file: 'gospel-of-philip.html', chapters: 1 },
+            'Gospel of the Hebrews': { type: 'localHtml', file: 'gospel-of-hebrews.html', chapters: 1 },
+            'Gospel of the Egyptians': { type: 'localHtml', file: 'gospel-of-egyptians.html', chapters: 1 },
+            'Gospel of Truth': { type: 'localHtml', file: 'gospel-of-truth.html', chapters: 1 },
+            'Gospel of Nicodemus': { type: 'localHtml', file: 'gospel-of-nicodemus.html', chapters: 1 },
+            'Infancy Gospel of Thomas': { type: 'localHtml', file: 'infancy-gospel-thomas.html', chapters: 1 },
+            'Protoevangelium of James': { type: 'localHtml', file: 'protoevangelium-james.html', chapters: 1 },
+            'Secret Gospel of Mark': { type: 'localHtml', file: 'secret-gospel-mark.html', chapters: 1 },
+            'Apocryphon of John': { type: 'localHtml', file: 'apocryphon-of-john.html', chapters: 1 },
+            'Sophia of Jesus Christ': { type: 'localHtml', file: 'sophia-jesus-christ.html', chapters: 1 },
+            'Pistis Sophia': { type: 'localHtml', file: 'pistis-sophia.html', chapters: 4 },
+            'Dialogue of the Savior': { type: 'localHtml', file: 'dialogue-savior.html', chapters: 1 },
+            'Book of Thomas the Contender': { type: 'localHtml', file: 'book-thomas-contender.html', chapters: 1 },
+            'Didache': { type: 'localHtml', file: 'didache.html', chapters: 16 },
+            'Shepherd of Hermas': { type: 'local', abbrev: 'Hermas', chapters: 114 },
+            'Epistle of Barnabas': { type: 'localHtml', file: 'epistle-barnabas.html', chapters: 21 },
+            'Acts of Paul and Thecla': { type: 'localHtml', file: 'acts-paul-thecla.html', chapters: 1 },
+            'Apocalypse of Peter': { type: 'local', abbrev: 'ApocPet', chapters: 1 },
+
+            // Ethiopian/Pseudepigrapha
+            '1 Enoch': { type: 'local', abbrev: '1En', chapters: 108 },
+            '2 Enoch': { type: 'local', abbrev: '2En', chapters: 68 },
+            '3 Enoch': { type: 'local', abbrev: '3En', chapters: 48 },
+            'Jubilees': { type: 'local', abbrev: 'Jub', chapters: 50 },
+            '2 Baruch': { type: 'local', abbrev: '2Bar', chapters: 87 },
+            '3 Baruch': { type: 'local', abbrev: '3Bar', chapters: 17 },
+            '4 Baruch': { type: 'local', abbrev: '4Bar', chapters: 9 },
+            'Assumption of Moses': { type: 'localHtml', file: 'assumption-moses.html', chapters: 12 },
+            'Martyrdom and Ascension of Isaiah': { type: 'local', abbrev: 'AscIsa', chapters: 11 },
+            'Life of Adam and Eve': { type: 'local', abbrev: 'LAE', chapters: 51 },
+            'Testament of Abraham': { type: 'localHtml', file: 'testament-abraham.html', chapters: 20 },
+            'Testament of Solomon': { type: 'local', abbrev: 'TSol', chapters: 26 },
+            'Testament of Job': { type: 'localHtml', file: 'testament-job.html', chapters: 53 },
+            'Apocalypse of Abraham': { type: 'localHtml', file: 'apocalypse-abraham.html', chapters: 32 },
+            'Testament of the Twelve Patriarchs': { type: 'local', abbrev: 'T12Pat', chapters: 12 },
+            '4 Ezra': { type: 'localHtml', file: '4-ezra.html', chapters: 16 },
+            'Psalms of Solomon': { type: 'localHtml', file: 'psalms-solomon.html', chapters: 18 },
+            '4 Maccabees': { type: 'localHtml', file: '4-maccabees.html', chapters: 18 },
+            '3 Maccabees': { type: 'localHtml', file: '3-maccabees.html', chapters: 7 },
+            'Book of Jasher': { type: 'local', abbrev: 'Jasher', chapters: 91 },
+            'Apocalypse of Sedrach': { type: 'local', abbrev: 'Sedrach', chapters: 1 },
+
+            // Deuterocanonical
+            'Wisdom': { type: 'local', abbrev: 'Wis', chapters: 19 },
+            'Sirach': { type: 'local', abbrev: 'Sir', chapters: 51 },
+            'Tobit': { type: 'local', abbrev: 'Tob', chapters: 14 },
+            'Judith': { type: 'local', abbrev: 'Jdt', chapters: 16 },
+            'Baruch': { type: 'local', abbrev: 'Bar', chapters: 6 },
+            '1 Maccabees': { type: 'local', abbrev: '1Macc', chapters: 16 },
+            '2 Maccabees': { type: 'local', abbrev: '2Macc', chapters: 15 },
+            'Susanna': { type: 'local', abbrev: 'Sus', chapters: 1 },
+            'Bel and the Dragon': { type: 'local', abbrev: 'Bel', chapters: 1 },
+            'Prayer of Azariah': { type: 'local', abbrev: 'PrAzar', chapters: 1 },
+            'Greek Esther': { type: 'local', abbrev: 'GkEsth', chapters: 6 },
+            '1 Esdras': { type: 'local', abbrev: '1Esd', chapters: 9 },
+            '2 Esdras': { type: 'local', abbrev: '2Esd', chapters: 16 },
+            'Prayer of Manasseh': { type: 'local', abbrev: 'PrMan', chapters: 1 },
+
+            // Dead Sea Scrolls
+            'Community Rule': { type: 'localHtml', file: 'dead-sea-scrolls/community-rule.html', chapters: 1 },
+            'War Scroll': { type: 'localHtml', file: 'dead-sea-scrolls/war-scroll.html', chapters: 1 },
+            'Temple Scroll': { type: 'localHtml', file: 'dead-sea-scrolls/temple-scroll.html', chapters: 1 },
+            'Damascus Document': { type: 'localHtml', file: 'dead-sea-scrolls/damascus-document.html', chapters: 1 },
+            'Thanksgiving Hymns': { type: 'localHtml', file: 'dead-sea-scrolls/thanksgiving-hymns.html', chapters: 1 },
+            'Pesher Habakkuk': { type: 'localHtml', file: 'dead-sea-scrolls/pesher-habakkuk.html', chapters: 1 },
+            'Book of Giants': { type: 'localHtml', file: 'dead-sea-scrolls/book-of-giants.html', chapters: 1 },
+            'Copper Scroll': { type: 'localHtml', file: 'dead-sea-scrolls/copper-scroll.html', chapters: 1 },
+            'Genesis Apocryphon': { type: 'localHtml', file: 'dead-sea-scrolls/genesis-apocryphon.html', chapters: 1 },
+            'Songs of Sabbath Sacrifice': { type: 'localHtml', file: 'dead-sea-scrolls/songs-sabbath-sacrifice.html', chapters: 1 },
+
+            // Lost Books descriptions
+            'Book of the Wars of the Lord': { type: 'lost', description: 'Ancient Hebrew war chronicles cited in Numbers 21:14. Lost before the time of Christ.', references: ['Numbers 21:14'] },
+            'Book of Jasher (Lost)': { type: 'lost', description: 'Ancient chronicle cited for the sun standing still and David\'s lament.', references: ['Joshua 10:13', '2 Samuel 1:18'] },
+            'Book of the Annals of Solomon': { type: 'lost', description: 'Official court records of Solomon\'s reign.', references: ['1 Kings 11:41'] },
+            'Annals of King David': { type: 'lost', description: 'Chronicles of King David\'s reign.', references: ['1 Chronicles 27:24'] },
+            'Annals of Kings of Israel': { type: 'lost', description: 'Official court records of northern kingdom. Referenced 17 times.', references: ['1 Kings 14:19', '2 Kings 15:31'] },
+            'Annals of Kings of Judah': { type: 'lost', description: 'Official court records of southern kingdom. Referenced 15 times.', references: ['1 Kings 14:29', '2 Kings 24:5'] },
+            'Book of Kings of Israel & Judah': { type: 'lost', description: 'Combined chronicle of both kingdoms.', references: ['2 Chronicles 27:7', '2 Chronicles 35:27'] },
+            'Book of Samuel the Seer': { type: 'lost', description: 'Prophetic records about David\'s reign.', references: ['1 Chronicles 29:29'] },
+            'Book of Nathan the Prophet': { type: 'lost', description: 'Nathan\'s prophetic writings.', references: ['1 Chronicles 29:29', '2 Chronicles 9:29'] },
+            'Book of Gad the Seer': { type: 'lost', description: 'Prophetic records by David\'s seer.', references: ['1 Chronicles 29:29'] },
+            'Prophecy of Ahijah': { type: 'lost', description: 'Prophetic writings about Solomon and Jeroboam.', references: ['2 Chronicles 9:29'] },
+            'Visions of Iddo the Seer': { type: 'lost', description: 'Prophetic visions referenced 3 times.', references: ['2 Chronicles 9:29', '2 Chronicles 12:15'] },
+            'Story of Prophet Iddo': { type: 'lost', description: 'Midrash/story concerning prophet Iddo.', references: ['2 Chronicles 13:22'] },
+            'Book of Shemaiah': { type: 'lost', description: 'Prophetic records about Rehoboam.', references: ['2 Chronicles 12:15'] },
+            'Book of Jehu': { type: 'lost', description: 'Historical work about Jehoshaphat.', references: ['2 Chronicles 20:34'] },
+            'Sayings of the Seers': { type: 'lost', description: 'Collection of prophetic sayings.', references: ['2 Chronicles 33:19'] },
+            'Acts of Uzziah by Isaiah': { type: 'lost', description: 'Isaiah\'s record of King Uzziah.', references: ['2 Chronicles 26:22'] },
+            'Laments for Josiah': { type: 'lost', description: 'Jeremiah\'s laments for King Josiah.', references: ['2 Chronicles 35:25'] },
+            'Commentary on Book of Kings': { type: 'lost', description: 'Midrash on the Book of Kings.', references: ['2 Chronicles 24:27'] },
+            'Manner of the Kingdom': { type: 'lost', description: 'Samuel\'s book on kingly governance.', references: ['1 Samuel 10:25'] },
+            'Epistle to the Laodiceans': { type: 'lost', description: 'Paul\'s letter mentioned in Colossians 4:16.', references: ['Colossians 4:16'] },
+            'Earlier Epistle to Corinthians': { type: 'lost', description: 'Paul\'s first letter to Corinth (before canonical 1 Corinthians).', references: ['1 Corinthians 5:9'] },
+            'Severe Letter to Corinthians': { type: 'lost', description: 'Paul\'s tearful/severe letter written between 1 and 2 Corinthians.', references: ['2 Corinthians 2:4', '2 Corinthians 7:8'] },
+            'Assumption of Moses (Lost)': { type: 'lost', description: 'Source for Michael vs Satan dispute over Moses\' body.', references: ['Jude 9'] },
+            'Prayer of Manasseh (source)': { type: 'lost', description: 'Original source referenced for Manasseh\'s prayer.', references: ['2 Chronicles 33:18'] },
+            'Visions of Iddo (Jeroboam)': { type: 'lost', description: 'Iddo\'s visions specifically about Jeroboam.', references: ['2 Chronicles 9:29'] }
+        };
+
+        // Text viewer state
+        let currentViewerBook = null;
+        let currentViewerChapter = 1;
+        let currentViewerTotalChapters = 1;
+
+        function openTextViewer(bookName, chapters) {
+            currentViewerBook = bookName;
+            currentViewerChapter = 1;
+            currentViewerTotalChapters = chapters || 1;
+
+            document.getElementById('text-viewer-title').textContent = bookName;
+            document.getElementById('text-viewer-modal').style.display = 'block';
+            populateChapterSelector();
+            loadViewerContent();
+        }
+
+        function closeTextViewer() {
+            document.getElementById('text-viewer-modal').style.display = 'none';
+        }
+
+        function populateChapterSelector() {
+            const select = document.getElementById('chapter-select');
+            select.innerHTML = '';
+            for (let i = 1; i <= currentViewerTotalChapters; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i;
+                if (i === currentViewerChapter) option.selected = true;
+                select.appendChild(option);
+            }
+            updateChapterButtons();
+        }
+
+        function updateChapterButtons() {
+            document.getElementById('prev-chapter-btn').disabled = currentViewerChapter <= 1;
+            document.getElementById('next-chapter-btn').disabled = currentViewerChapter >= currentViewerTotalChapters;
+        }
+
+        function prevChapter() {
+            if (currentViewerChapter > 1) {
+                currentViewerChapter--;
+                document.getElementById('chapter-select').value = currentViewerChapter;
+                updateChapterButtons();
+                loadViewerContent();
+            }
+        }
+
+        function nextChapter() {
+            if (currentViewerChapter < currentViewerTotalChapters) {
+                currentViewerChapter++;
+                document.getElementById('chapter-select').value = currentViewerChapter;
+                updateChapterButtons();
+                loadViewerContent();
+            }
+        }
+
+        function goToChapter(chapter) {
+            currentViewerChapter = parseInt(chapter);
+            updateChapterButtons();
+            loadViewerContent();
+        }
+
+        async function loadViewerContent() {
+            const bookInfo = bookTextSources[currentViewerBook];
+            const bodyDiv = document.getElementById('text-viewer-body');
+
+            // Show/hide navigation based on chapters
+            const showNav = currentViewerTotalChapters > 1;
+            document.getElementById('prev-chapter-btn').style.display = showNav ? '' : 'none';
+            document.getElementById('next-chapter-btn').style.display = showNav ? '' : 'none';
+            document.querySelector('.chapter-selector').style.display = showNav ? '' : 'none';
+
+            if (!bookInfo) {
+                // Try to load from KJV for canonical books
+                loadCanonicalBookContent();
+                return;
+            }
+
+            if (bookInfo.type === 'lost') {
+                // Show lost book info
+                bodyDiv.innerHTML = `
+                    <div style="text-align: center; padding: 40px;">
+                        <h3 style="color: #ffa500;">📜 Lost to History</h3>
+                        <p style="color: #ccc; font-size: 1.1em; margin: 20px 0;">${bookInfo.description}</p>
+                        ${bookInfo.references ? `
+                            <div style="margin-top: 30px;">
+                                <h4 style="color: var(--accent-gold);">Biblical References:</h4>
+                                <ul style="list-style: none; padding: 0;">
+                                    ${bookInfo.references.map(ref => `<li style="color: #00CED1; margin: 5px 0;">${ref}</li>`).join('')}
+                                </ul>
+                            </div>
+                        ` : ''}
+                        <p style="color: #888; margin-top: 30px; font-style: italic;">This ancient text is mentioned in Scripture but no copies have survived to the present day.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            if (bookInfo.type === 'localHtml') {
+                bodyDiv.innerHTML = '<p style="text-align:center;">Loading text...</p>';
+                try {
+                    const response = await fetch(`data/gnostic/${bookInfo.file}`);
+                    if (response.ok) {
+                        const html = await response.text();
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        const content = doc.querySelector('.content, .text-content, article, main, body');
+                        bodyDiv.innerHTML = content ? content.innerHTML : html;
+                    } else {
+                        bodyDiv.innerHTML = `<p style="text-align:center; color: #ff6b9d;">Text file not found. Visit the <a href="library.html?book=${encodeURIComponent(currentViewerBook)}" style="color: var(--accent-gold);">Library</a> for more options.</p>`;
+                    }
+                } catch (e) {
+                    bodyDiv.innerHTML = `<p style="text-align:center; color: #ff6b9d;">Unable to load text. Visit the <a href="library.html?book=${encodeURIComponent(currentViewerBook)}" style="color: var(--accent-gold);">Library</a> for more options.</p>`;
+                }
+                return;
+            }
+
+            // For 'local' type or others, try to load from KJV or show not available
+            loadCanonicalBookContent();
+        }
+
+        async function loadCanonicalBookContent() {
+            const bodyDiv = document.getElementById('text-viewer-body');
+            bodyDiv.innerHTML = '<p style="text-align:center;">Loading chapter...</p>';
+
+            try {
+                if (typeof BibleTextLoader !== 'undefined') {
+                    const loader = new BibleTextLoader();
+                    await loader.load();
+                    const chapter = loader.getChapter(currentViewerBook, currentViewerChapter);
+                    if (chapter && chapter.verses) {
+                        bodyDiv.innerHTML = chapter.verses.map(v =>
+                            `<div class="verse"><span class="verse-num">${v.verse}</span>${v.text}</div>`
+                        ).join('');
+                        return;
+                    }
+                }
+                bodyDiv.innerHTML = `
+                    <p style="text-align:center; color: #ccc;">
+                        Text not available in this viewer.<br/>
+                        <a href="library.html?book=${encodeURIComponent(currentViewerBook)}" style="color: var(--accent-gold);">Open in Library</a> for full reading experience.
+                    </p>
+                `;
+            } catch (e) {
+                bodyDiv.innerHTML = `<p style="text-align:center; color: #ff6b9d;">Unable to load text.</p>`;
+            }
         }
 
         // Non-Canonical Cross-References
@@ -732,6 +1254,7 @@
 
         // Notable non-canonical text excerpts (since we may not have full JSON for all)
         const nonCanonTextExcerpts = {
+            // Ethiopian/1 Enoch
             '1En.1.9': 'And behold! He cometh with ten thousands of His holy ones to execute judgment upon all...',
             '1En.10.4': 'Bind Azazel hand and foot, and cast him into the darkness...',
             '1En.10.6': 'Bind them fast for seventy generations in the valleys of the earth, till the day of their judgment.',
@@ -740,6 +1263,7 @@
             '1En.22.1': 'The spirits of the souls of the dead...are divided into separate compartments.',
             '1En.62.5': 'When they see that Son of Man sitting on the throne of his glory...',
             '1En.69.27': 'The sum of judgment was given unto the Son of Man...',
+            // Deuterocanonical
             'Wis.2.18': 'For if the just man be the son of God, he will help him...',
             'Wis.9.1': 'O God of my fathers, and Lord of mercy, who hast made all things with thy word...',
             'Wis.13.1': 'Surely vain are all men by nature, who are ignorant of God...',
@@ -753,7 +1277,59 @@
             'Jdt.16.17': 'Woe to the nations that rise up against my kindred...',
             'Jdt.13.18': 'Blessed art thou, O daughter, by the most high God, above all the women upon the earth.',
             'Tob.4.15': 'Do that to no man which thou hatest.',
-            'Bar.3.29': 'Who hath gone up into heaven, and taken her, and brought her down from the clouds?'
+            'Bar.3.29': 'Who hath gone up into heaven, and taken her, and brought her down from the clouds?',
+            // GNOSTIC TEXTS - Didache
+            'Did.1.1': 'There are two ways, one of life and one of death, and there is a great difference between them.',
+            'Did.1.7': 'Concerning baptism, baptize in the name of the Father, Son, and Holy Spirit in living water.',
+            'Did.1.8': 'After this manner therefore pray ye: Our Father which art in heaven, hallowed be thy name...',
+            'Did.1.9': 'Give not that which is holy unto the dogs, neither cast pearls before swine.',
+            // Gospel of Thomas
+            'GThom.1.3': 'The Kingdom is inside you and outside you. When you know yourselves, you will be known.',
+            'GThom.1.16': 'I have come to cast fire upon the earth...I have come to cast divisions upon the earth.',
+            'GThom.1.22': 'When you make the two one, the inside like the outside...then you will enter the Kingdom.',
+            'GThom.1.32': 'A city built on a high mountain and fortified cannot fall, nor can it be hidden.',
+            'GThom.1.76': 'The Kingdom of the Father is like a merchant who had a consignment of merchandise and found a pearl.',
+            'GThom.1.114': 'Every woman who makes herself male will enter the Kingdom of Heaven.',
+            // Gospel of Judas
+            'GJud.1.1': 'Judas said to Jesus: I know who you are and where you have come from. You are from the immortal realm of Barbelo.',
+            // Gospel of Mary
+            'GMary.1.1': 'Peter said to Mary: Sister, we know that the Savior loved you more than other women.',
+            // Gospel of Peter
+            'GPet.1.1': 'And they brought two malefactors, and crucified the Lord between them. But he held his peace.',
+            // Gospel of Philip
+            'GPhil.1.1': 'The Lord loved Mary Magdalene more than all the disciples and kissed her often on her mouth.',
+            // Infancy Gospel of Thomas
+            'InfThom.1.1': 'I, Thomas the Israelite, tell you all the works of the childhood of our Lord Jesus Christ.',
+            // Shepherd of Hermas
+            'Hermas.1.1': 'The shepherd, the angel of repentance, said to me: I wish to show you what the Holy Spirit showed you.',
+            // Epistle of Barnabas
+            'Barn.1.1': 'The way of light is this: If anyone wishes to travel to the appointed place, let him be zealous in his works.',
+            // Protoevangelium of James
+            'ProtJas.1.1': 'Mary was brought up in the Temple of the Lord like a dove, receiving food from the hand of an angel.',
+            // Gospel of Nicodemus
+            'GNic.1.1': 'I, Nicodemus, have recorded the things done in Jerusalem after the crucifixion of Jesus.',
+            // Acts of Paul and Thecla
+            'ActsPT.1.1': 'Thecla listened to Paul\'s word concerning virginity and resurrection, and believed.',
+            // Apocalypse of Peter
+            'ApocPet.1.1': 'And the Lord showed me a very great region outside this world, exceedingly bright with light.',
+            // Secret Gospel of Mark
+            'SecMark.1.1': 'And they came to Bethany, and a certain woman whose brother had died was there.',
+            // Gospel of the Hebrews
+            'GHeb.1.1': 'The Holy Spirit, my Mother, took me by one of my hairs and carried me to the great mountain Tabor.',
+            // Gospel of the Egyptians
+            'GEgy.1.1': 'When Salome asked, "How long will death hold sway?" the Lord said, "As long as you women bear children."',
+            // Gospel of Truth
+            'GTruth.1.1': 'The gospel of truth is joy for those who have received grace from the Father of truth.',
+            // Apocryphon of John
+            'ApocJohn.1.1': 'The Monad is a monarchy with nothing above it. It is God and Father of everything.',
+            // Sophia of Jesus Christ
+            'SophJC.1.1': 'After he rose from the dead, his twelve disciples gathered on a mountain in Galilee.',
+            // Pistis Sophia
+            'PistSoph.1.1': 'It happened that after Jesus had risen from the dead, he spent eleven years speaking with his disciples.',
+            // Dialogue of the Savior
+            'DialSav.1.1': 'The Lord said to his disciples: Seek and you will find. But what you asked me then, I did not tell you.',
+            // Book of Thomas
+            'BkThom.1.1': 'The secret words that the Savior spoke to Judas Thomas, which I, Mathaias, wrote down.'
         };
 
         // Additional Gnostic and Lost cross-references (from table-view.html)
@@ -865,7 +1441,18 @@
                 {nt: "2Chr.20.34", target: "Jehu.1.1", type: "Lost", votes: 100, desc: "Book of Jehu"},
                 {nt: "2Chr.33.19", target: "SaySeers.1.1", type: "Lost", votes: 100, desc: "Sayings of the Seers"},
                 {nt: "Col.4.16", target: "EpLaod.1.1", type: "Lost", votes: 100, desc: "Epistle to the Laodiceans"},
-                {nt: "1Cor.5.9", target: "EarlierCor.1.1", type: "Lost", votes: 100, desc: "Earlier Epistle to Corinthians"}
+                {nt: "1Cor.5.9", target: "EarlierCor.1.1", type: "Lost", votes: 100, desc: "Earlier Epistle to Corinthians"},
+                {nt: "2Cor.2.4", target: "SevereCor.1.1", type: "Lost", votes: 100, desc: "Severe/Tearful Letter to Corinthians"},
+                {nt: "1Chr.27.24", target: "AnnDavid.1.1", type: "Lost", votes: 100, desc: "Annals of King David"},
+                {nt: "1Sam.10.25", target: "MannerKing.1.1", type: "Lost", votes: 100, desc: "Manner of the Kingdom (Book of Statutes)"},
+                {nt: "2Chr.26.22", target: "ActsUzziah.1.1", type: "Lost", votes: 100, desc: "Acts of Uzziah by Isaiah"},
+                {nt: "2Chr.35.25", target: "LamentsJos.1.1", type: "Lost", votes: 100, desc: "Laments for Josiah"},
+                {nt: "2Chr.13.22", target: "StoryIddo.1.1", type: "Lost", votes: 100, desc: "Story/Midrash of Prophet Iddo"},
+                {nt: "2Chr.27.7", target: "BkKingsIJ.1.1", type: "Lost", votes: 100, desc: "Book of Kings of Israel and Judah"},
+                {nt: "2Chr.24.27", target: "CommKings.1.1", type: "Lost", votes: 100, desc: "Commentary on the Book of Kings"},
+                {nt: "Jude.1.9", target: "AssumpMos.1.1", type: "Lost", votes: 100, desc: "Assumption of Moses - Michael vs Satan over body"},
+                {nt: "2Chr.33.18", target: "PrayerMan.1.1", type: "Lost", votes: 75, desc: "Prayer of Manasseh (referenced source)"},
+                {nt: "2Chr.9.29", target: "VisIddo.1.1", type: "Lost", votes: 100, desc: "Visions of Iddo concerning Jeroboam"}
             ];
         }
 
@@ -901,20 +1488,26 @@
 
             // Try non-canonical excerpts first for non-canon refs
             if (isNonCanon) {
-                // Normalize the reference for lookup
-                const normalizedRef = ref.split('-')[0]; // Get base reference
-                for (const key of Object.keys(nonCanonTextExcerpts)) {
-                    if (ref.toLowerCase().includes(key.toLowerCase().split('.').slice(0,2).join('.'))) {
-                        // Match on book and chapter
-                        const excerptKey = Object.keys(nonCanonTextExcerpts).find(k =>
-                            ref.toLowerCase().startsWith(k.toLowerCase().split('.').slice(0,2).join('.'))
-                        );
-                        if (excerptKey) return nonCanonTextExcerpts[excerptKey];
-                    }
+                // Direct match first
+                if (nonCanonTextExcerpts[ref]) {
+                    return nonCanonTextExcerpts[ref];
                 }
-                // Direct match
-                if (nonCanonTextExcerpts[normalizedRef]) {
-                    return nonCanonTextExcerpts[normalizedRef];
+
+                // Try without verse (just book.chapter)
+                const parts = ref.split('.');
+                if (parts.length >= 2) {
+                    const bookChapter = parts[0] + '.' + parts[1];
+                    // Look for any key that starts with this book.chapter
+                    for (const key of Object.keys(nonCanonTextExcerpts)) {
+                        if (key.startsWith(bookChapter + '.') || key === bookChapter) {
+                            return nonCanonTextExcerpts[key];
+                        }
+                    }
+                    // Also try book.1 as fallback (many Gnostic refs use chapter 1)
+                    const bookOnly = parts[0] + '.1.1';
+                    if (nonCanonTextExcerpts[bookOnly]) {
+                        return nonCanonTextExcerpts[bookOnly];
+                    }
                 }
             }
 
@@ -1096,12 +1689,12 @@
                 btn.style.background = btn.id.includes('all') ? 'rgba(255, 0, 0, 0.3)' :
                     btn.id.includes('deutero') ? 'rgba(147, 112, 219, 0.3)' :
                     btn.id.includes('ethiopian') ? 'rgba(255, 107, 157, 0.3)' :
-                    btn.id.includes('gnostic') ? 'rgba(255, 68, 68, 0.3)' :
+                    btn.id.includes('gnostic') ? 'rgba(136, 136, 136, 0.3)' :
                     'rgba(255, 165, 0, 0.3)';
                 btn.style.color = btn.id.includes('all') ? '#FF0000' :
                     btn.id.includes('deutero') ? '#9370DB' :
                     btn.id.includes('ethiopian') ? '#ff6b9d' :
-                    btn.id.includes('gnostic') ? '#ff4444' : '#ffa500';
+                    btn.id.includes('gnostic') ? '#888888' : '#ffa500';
             });
 
             // Highlight selected tab
@@ -1119,7 +1712,7 @@
                 document.getElementById('inline-tab-ethiopian').style.color = 'white';
             } else if (type === 'Gnostic') {
                 document.getElementById('inline-tab-gnostic').classList.add('active');
-                document.getElementById('inline-tab-gnostic').style.background = '#ff4444';
+                document.getElementById('inline-tab-gnostic').style.background = '#333';
                 document.getElementById('inline-tab-gnostic').style.color = 'white';
             } else if (type === 'Lost') {
                 document.getElementById('inline-tab-lost').classList.add('active');
@@ -1215,7 +1808,7 @@
             const typeColors = {
                 'Deuterocanonical': '#9370DB',
                 'Ethiopian': '#ff6b9d',
-                'Gnostic': '#ff4444',
+                'Gnostic': '#888888',
                 'Lost': '#ffa500'
             };
 
@@ -1277,11 +1870,15 @@
         window.onclick = function(event) {
             const booksModal = document.getElementById('books-modal');
             const noncanonModal = document.getElementById('noncanon-modal');
+            const textViewerModal = document.getElementById('text-viewer-modal');
             if (event.target == booksModal) {
                 closeBooksModal();
             }
             if (event.target == noncanonModal) {
                 closeNonCanonModal();
+            }
+            if (event.target == textViewerModal) {
+                closeTextViewer();
             }
         }
 
@@ -1296,7 +1893,7 @@
     <footer style="background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%); border-top: 1px solid rgba(255, 107, 157, 0.2); padding: 20px 0; margin-top: 60px; text-align: center;">
         <div class="container">
             <p style="color: #888; margin: 10px 0; font-size: 0.9em;">
-                PROJECT 147 | Truth Seeking Division
+                PROJECT 159 | Truth Seeking Division
             </p>
             <div style="margin: 15px 0;">
                 <a href="table-view.html" style="color: var(--accent-cyan); text-decoration: none; margin: 0 15px;">Cross-References</a>
@@ -1305,7 +1902,7 @@
                 <a href="history.html" style="color: var(--accent-cyan); text-decoration: none; margin: 0 15px;">History</a>
             </div>
             <p style="color: #666; margin: 10px 0; font-size: 0.8em;">
-                147 Books Cross-Reference Analysis | Built for biblical research and study
+                159 Books Cross-Reference Analysis | Built for biblical research and study
             </p>
         </div>
     </footer>

@@ -376,6 +376,35 @@
     </style>
 </head>
 <body>
+    <!-- Navigation Menu -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="table-view.html" class="nav-logo">📜 PROJECT 159</a>
+            <button class="nav-toggle" onclick="toggleNav()">☰</button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="table-view.html" class="nav-link active">📊 Cross-References</a></li>
+                <li><a href="arc-diagram.html" class="nav-link">🌈 Arc Diagram</a></li>
+                <li><a href="library.html" class="nav-link">📚 Library</a></li>
+                <li><a href="timeline.html" class="nav-link">📅 Timeline</a></li>
+                <li><a href="history.html" class="nav-link">📖 History</a></li>
+                <li><a href="donate.html" class="nav-link">💛 Donate</a></li>
+            </ul>
+        </div>
+    </nav>
+    <style>
+        .main-nav { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-bottom: 2px solid rgba(255, 107, 157, 0.3); position: sticky; top: 0; z-index: 1000; padding: 0 20px; }
+        .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 15px 0; }
+        .nav-logo { font-size: 1.4em; font-weight: bold; color: #FFD700; text-decoration: none; }
+        .nav-logo:hover { color: #fff; }
+        .nav-links { display: flex; list-style: none; margin: 0; padding: 0; gap: 10px; }
+        .nav-link { color: #ccc; text-decoration: none; padding: 10px 15px; border-radius: 6px; transition: all 0.2s; font-size: 0.95em; }
+        .nav-link:hover { background: rgba(255, 107, 157, 0.2); color: #fff; }
+        .nav-link.active { background: rgba(255, 107, 157, 0.3); color: #FFD700; border: 1px solid rgba(255, 107, 157, 0.5); }
+        .nav-toggle { display: none; background: none; border: 2px solid #FFD700; color: #FFD700; font-size: 1.5em; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+        @media (max-width: 768px) { .nav-toggle { display: block; } .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; background: #1a1a2e; flex-direction: column; padding: 15px; border-bottom: 2px solid rgba(255, 107, 157, 0.3); } .nav-links.active { display: flex; } .nav-link { padding: 12px 15px; } }
+    </style>
+    <script>function toggleNav() { document.getElementById('nav-links').classList.toggle('active'); }</script>
+
     <div class="container">
         <div class="header-custom">
             <h1>📖 Biblical Cross-References with Source Text</h1>
@@ -384,14 +413,14 @@
 
         <div class="info-panel">
             <h3>🔍 Analysis Goal: Cross-Reference Full Bible for Arc Diagram</h3>
-            <p>Comprehensive cross-reference analysis containing all 147 books across biblical traditions:</p>
+            <p>Comprehensive cross-reference analysis containing all 159 books across biblical traditions:</p>
             <ul>
                 <li><strong style="color: #00CED1;">Protestant Canon (66 Books)</strong>
                     <br><em>Old Testament (39):</em> Genesis, Exodus, Leviticus, Numbers, Deuteronomy, Joshua, Judges, Ruth, 1-2 Samuel, 1-2 Kings, 1-2 Chronicles, Ezra, Nehemiah, Esther, Job, Psalms, Proverbs, Ecclesiastes, Song of Solomon, Isaiah, Jeremiah, Lamentations, Ezekiel, Daniel, Hosea, Joel, Amos, Obadiah, Jonah, Micah, Nahum, Habakkuk, Zephaniah, Haggai, Zechariah, Malachi
                     <br><em>New Testament (27):</em> Matthew, Mark, Luke, John, Acts, Romans, 1-2 Corinthians, Galatians, Ephesians, Philippians, Colossians, 1-2 Thessalonians, 1-2 Timothy, Titus, Philemon, Hebrews, James, 1-2 Peter, 1-3 John, Jude, Revelation</li>
                 <li><strong style="color: #9370DB;">Deuterocanonical Books (14)</strong> - Tobit, Judith, Wisdom of Solomon, Sirach, Baruch, 1-2 Maccabees, Susanna, Bel and the Dragon, Prayer of Azariah, Greek Esther, 1-2 Esdras, Prayer of Manasseh</li>
                 <li><strong style="color: #ff6b9d;">Ethiopian Canon & Pseudepigrapha (21)</strong> - 1-3 Enoch, Jubilees, 2-4 Baruch, 3-4 Maccabees, Psalms of Solomon, 4 Ezra, Life of Adam and Eve, Book of Jasher, Testament of the Twelve Patriarchs, Testament of Solomon, Martyrdom and Ascension of Isaiah, Assumption of Moses, Testament of Abraham, Testament of Job, Apocalypse of Abraham, Apocalypse of Sedrach</li>
-                <li><strong style="color: #ffa500;">Lost/Referenced Texts (14)</strong> - Book of the Wars of the Lord, Book of the Annals of Solomon, Book of the Annals of the Kings of Israel/Judah, Books of Samuel/Nathan/Gad the Seers, Prophecy of Ahijah, Visions of Iddo, Book of Shemaiah, Book of Jehu, Sayings of the Seers, Epistle to the Laodiceans, Earlier Epistle to Corinthians</li>
+                <li><strong style="color: #ffa500;">Lost/Referenced Texts (26)</strong> - Book of the Wars of the Lord, Book of Jasher, Annals of Solomon, Annals of King David, Annals of Kings of Israel/Judah, Book of Kings of Israel & Judah, Books of Samuel/Nathan/Gad the Seers, Prophecy of Ahijah, Visions of Iddo, Story of Prophet Iddo, Book of Shemaiah, Book of Jehu, Sayings of the Seers, Acts of Uzziah by Isaiah, Laments for Josiah, Commentary on Book of Kings, Manner of the Kingdom, Epistle to the Laodiceans, Earlier Epistle to Corinthians, Severe Letter to Corinthians, Assumption of Moses</li>
                 <li><strong style="color: #ff4444;">Gnostic & Early Christian (22)</strong> - Gospels of Judas, Thomas, Mary, Peter, Philip, Hebrews, Egyptians, Truth, Nicodemus; Infancy Gospel of Thomas, Protoevangelium of James, Secret Gospel of Mark, Apocryphon of John, Sophia of Jesus Christ, Pistis Sophia, Dialogue of the Savior, Book of Thomas, Didache, Shepherd of Hermas, Epistle of Barnabas, Acts of Paul and Thecla, Apocalypse of Peter</li>
                 <li><strong style="color: #00BFFF;">Dead Sea Scrolls (10)</strong> - Community Rule (1QS), War Scroll (1QM), Temple Scroll (11QT), Damascus Document, Thanksgiving Hymns (1QH), Pesher Habakkuk, Genesis Apocryphon, Book of Giants, Copper Scroll, Songs of Sabbath Sacrifice</li>
             </ul>
@@ -401,7 +430,7 @@
         <!-- Stats -->
         <div class="stats">
             <div class="stat-card clickable" onclick="showBooksModal()" style="cursor: pointer;">
-                <div class="stat-number" id="stat-total-books">147</div>
+                <div class="stat-number" id="stat-total-books">159</div>
                 <div class="stat-label">Total Books (Click to view)</div>
             </div>
             <div class="stat-card">
@@ -516,8 +545,8 @@
     <div id="books-modal" class="modal">
         <div class="modal-content">
             <span class="modal-close" onclick="closeBooksModal()">&times;</span>
-            <h2 style="color: var(--accent-gold); margin-top: 0;">📚 Complete Biblical Library (137 Books)</h2>
-            <p style="color: #aaa; text-align: center; margin-top: 10px;">66 Protestant + 14 Deuterocanonical + 21 Ethiopian + 22 Gnostic + 14 Lost</p>
+            <h2 style="color: var(--accent-gold); margin-top: 0;">📚 Complete Biblical Library (159 Books)</h2>
+            <p style="color: #aaa; text-align: center; margin-top: 10px;">66 Protestant + 14 Deuterocanonical + 21 Ethiopian + 10 DSS + 22 Gnostic + 26 Lost</p>
 
             <div class="canon-section">
                 <h3>🔵 Protestant Canon (66 Books)</h3>
@@ -582,7 +611,7 @@
             </p>
             <div style="margin: 15px 0;">
                 <a href="library.html" style="color: var(--accent-gold); text-decoration: none; margin: 0 15px; transition: color 0.3s;" onmouseover="this.style.color='var(--accent-cyan)'" onmouseout="this.style.color='var(--accent-gold)'">
-                    📚 Library (147 Books)
+                    📚 Library (159 Books)
                 </a>
                 <span style="color: #444;">|</span>
                 <a href="timeline.html" style="color: var(--accent-gold); text-decoration: none; margin: 0 15px; transition: color 0.3s;" onmouseover="this.style.color='var(--accent-cyan)'" onmouseout="this.style.color='var(--accent-gold)'">
@@ -598,7 +627,7 @@
                 </a>
             </div>
             <p style="color: #666; margin: 10px 0; font-size: 0.8em;">
-                147 Books Cross-Reference Analysis | Built for biblical research and study
+                159 Books Cross-Reference Analysis | Built for biblical research and study
             </p>
         </div>
     </footer>
@@ -885,7 +914,7 @@
         document.addEventListener('DOMContentLoaded', async () => {
             try {
                 // Show loading message
-                document.getElementById('refs-tbody').innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 40px; font-size: 1.2em;">📥 Loading 344,000+ cross-references...</td></tr>';
+                document.getElementById('refs-tbody').innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 40px; font-size: 1.2em;">📥 Loading 345,000+ cross-references...</td></tr>';
 
                 // Load cross-references from file
                 await loader.load();
@@ -1259,19 +1288,31 @@
             lostDiv.innerHTML = '';
             const lostBooks = [
                 {name: 'Book of the Wars of the Lord', desc: 'Num 21:14'},
+                {name: 'Book of Jasher (Lost)', desc: 'Josh 10:13, 2 Sam 1:18'},
                 {name: 'Book of the Annals of Solomon', desc: '1 Kings 11:41'},
+                {name: 'Annals of King David', desc: '1 Chr 27:24'},
                 {name: 'Book of the Annals of the Kings of Israel', desc: '17 references'},
                 {name: 'Book of the Annals of the Kings of Judah', desc: '15 references'},
+                {name: 'Book of Kings of Israel & Judah', desc: '2 Chr 27:7'},
                 {name: 'Book of Samuel the Seer', desc: '1 Chr 29:29'},
                 {name: 'Book of Nathan the Prophet', desc: '1 Chr 29:29'},
                 {name: 'Book of Gad the Seer', desc: '1 Chr 29:29'},
                 {name: 'Prophecy of Ahijah', desc: '2 Chr 9:29'},
                 {name: 'Visions of Iddo the Seer', desc: '3 references'},
+                {name: 'Story of Prophet Iddo', desc: '2 Chr 13:22'},
                 {name: 'Book of Shemaiah', desc: '2 Chr 12:15'},
                 {name: 'Book of Jehu', desc: '2 Chr 20:34'},
                 {name: 'Sayings of the Seers', desc: '2 Chr 33:19'},
+                {name: 'Acts of Uzziah by Isaiah', desc: '2 Chr 26:22'},
+                {name: 'Laments for Josiah', desc: '2 Chr 35:25'},
+                {name: 'Commentary on Book of Kings', desc: '2 Chr 24:27'},
+                {name: 'Manner of the Kingdom', desc: '1 Sam 10:25'},
                 {name: 'Epistle to the Laodiceans', desc: 'Col 4:16'},
-                {name: 'Earlier Epistle to the Corinthians', desc: '1 Cor 5:9'}
+                {name: 'Earlier Epistle to Corinthians', desc: '1 Cor 5:9'},
+                {name: 'Severe Letter to Corinthians', desc: '2 Cor 2:4'},
+                {name: 'Assumption of Moses', desc: 'Jude 9'},
+                {name: 'Prayer of Manasseh (source)', desc: '2 Chr 33:18'},
+                {name: 'Visions of Iddo (Jeroboam)', desc: '2 Chr 9:29'}
             ];
             lostBooks.forEach(book => {
                 const bookDiv = document.createElement('div');

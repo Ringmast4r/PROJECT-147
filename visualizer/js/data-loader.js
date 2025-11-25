@@ -51,11 +51,12 @@ class BibleDataLoader {
         if (this.isLoaded && !this.isPreviewMode) return;
 
         try {
-            // Always use local files (works for both localhost and GitHub Pages)
-            const apiUrl = '../data/processed/graph_data_88books.json';
+            // Use 66-book data for proper OT→NT rainbow arc order
+            // Non-canonical arcs are added separately via CrossRefLoader
+            const apiUrl = '../data/processed/graph_data_66books.json';
 
-            console.log('📖 Loading 88-book Biblical data...');
-            this.updateProgress(5, 'Loading 88-book Ethiopian Orthodox canon data...');
+            console.log('📖 Loading 66-book Biblical data (OT→NT order for rainbow arcs)...');
+            this.updateProgress(5, 'Loading Protestant canon data...');
 
             const response = await fetch(apiUrl);
             if (!response.ok) {
@@ -67,17 +68,18 @@ class BibleDataLoader {
             this.graphData = await response.json();
             this.updateProgress(80, 'Processing graph data...');
 
-            // Load stats locally (88-BOOK VERSION)
-            const statsResponse = await fetch('../data/processed/stats_88books.json');
+            // Load stats
+            const statsResponse = await fetch('../data/processed/stats_66books.json');
             if (statsResponse.ok) {
                 this.stats = await statsResponse.json();
             }
 
             this.isLoaded = true;
             this.isPreviewMode = false;
-            this.updateProgress(90, 'Augmenting to 147 books...');
+            this.updateProgress(90, 'Adding additional books...');
 
-            // Augment data to 147 books if augmenter is available
+            // Augment: Add Deuterocanonical, Ethiopian, DSS, Gnostic, Lost books to the RIGHT
+            // This preserves OT→NT order and appends extra books after
             if (typeof dataAugmenter !== 'undefined') {
                 this.graphData = dataAugmenter.augment(this.graphData);
             }
