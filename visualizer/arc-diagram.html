@@ -335,11 +335,11 @@
                 <table style="width: 100%; border-collapse: collapse;">
                     <thead style="position: sticky; top: 0; background: #1a1a2e; z-index: 1;">
                         <tr>
-                            <th style="padding: 12px; text-align: left; color: var(--accent-gold); border-bottom: 2px solid #FF0000; width: 25%;">From (Canonical)</th>
-                            <th style="padding: 12px; text-align: left; color: var(--accent-gold); border-bottom: 2px solid #FF0000; width: 25%;">To (Non-Canon)</th>
-                            <th style="padding: 12px; text-align: center; color: var(--accent-gold); border-bottom: 2px solid #FF0000; width: 12%;">Type</th>
-                            <th style="padding: 12px; text-align: center; color: var(--accent-gold); border-bottom: 2px solid #FF0000; width: 8%;">Votes</th>
-                            <th style="padding: 12px; text-align: left; color: var(--accent-gold); border-bottom: 2px solid #FF0000; width: 30%;">Description</th>
+                            <th onclick="sortInlineTable('nt')" style="padding: 12px; text-align: left; color: var(--accent-gold); border-bottom: 2px solid #FF0000; width: 25%; cursor: pointer; user-select: none;" title="Click to sort">From (Canonical) <span id="sort-nt" style="opacity: 0.5;">↕</span></th>
+                            <th onclick="sortInlineTable('target')" style="padding: 12px; text-align: left; color: var(--accent-gold); border-bottom: 2px solid #FF0000; width: 25%; cursor: pointer; user-select: none;" title="Click to sort">To (Non-Canon) <span id="sort-target" style="opacity: 0.5;">↕</span></th>
+                            <th onclick="sortInlineTable('type')" style="padding: 12px; text-align: center; color: var(--accent-gold); border-bottom: 2px solid #FF0000; width: 12%; cursor: pointer; user-select: none;" title="Click to sort">Type <span id="sort-type" style="opacity: 0.5;">↕</span></th>
+                            <th onclick="sortInlineTable('votes')" style="padding: 12px; text-align: center; color: var(--accent-gold); border-bottom: 2px solid #FF0000; width: 8%; cursor: pointer; user-select: none;" title="Click to sort">Votes <span id="sort-votes" style="opacity: 0.5;">↕</span></th>
+                            <th onclick="sortInlineTable('desc')" style="padding: 12px; text-align: left; color: var(--accent-gold); border-bottom: 2px solid #FF0000; width: 30%; cursor: pointer; user-select: none;" title="Click to sort">Description <span id="sort-desc" style="opacity: 0.5;">↕</span></th>
                         </tr>
                     </thead>
                     <tbody id="inline-table-body">
@@ -1130,16 +1130,82 @@
             populateInlineTable(type);
         }
 
+        // Sorting state
+        let currentSortColumn = 'votes';
+        let currentSortDirection = 'desc';
+        let currentFilterType = 'all';
+
+        function sortInlineTable(column) {
+            // Toggle direction if same column, otherwise default to desc for votes, asc for others
+            if (currentSortColumn === column) {
+                currentSortDirection = currentSortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentSortColumn = column;
+                currentSortDirection = column === 'votes' ? 'desc' : 'asc';
+            }
+
+            // Update sort indicators
+            ['nt', 'target', 'type', 'votes', 'desc'].forEach(col => {
+                const indicator = document.getElementById(`sort-${col}`);
+                if (indicator) {
+                    if (col === column) {
+                        indicator.textContent = currentSortDirection === 'asc' ? '↑' : '↓';
+                        indicator.style.opacity = '1';
+                    } else {
+                        indicator.textContent = '↕';
+                        indicator.style.opacity = '0.5';
+                    }
+                }
+            });
+
+            populateInlineTable(currentFilterType);
+        }
+
         function populateInlineTable(type) {
+            currentFilterType = type;
             const tbody = document.getElementById('inline-table-body');
 
             // Filter refs
             const filtered = type === 'all'
-                ? nonCanonRefs
+                ? [...nonCanonRefs]
                 : nonCanonRefs.filter(r => r.type === type);
 
-            // Sort by votes (highest first)
-            filtered.sort((a, b) => b.votes - a.votes);
+            // Sort based on current sort settings
+            filtered.sort((a, b) => {
+                let aVal, bVal;
+
+                switch (currentSortColumn) {
+                    case 'nt':
+                        aVal = a.nt.toLowerCase();
+                        bVal = b.nt.toLowerCase();
+                        break;
+                    case 'target':
+                        aVal = a.target.toLowerCase();
+                        bVal = b.target.toLowerCase();
+                        break;
+                    case 'type':
+                        aVal = a.type.toLowerCase();
+                        bVal = b.type.toLowerCase();
+                        break;
+                    case 'votes':
+                        aVal = a.votes;
+                        bVal = b.votes;
+                        break;
+                    case 'desc':
+                        aVal = (a.desc || '').toLowerCase();
+                        bVal = (b.desc || '').toLowerCase();
+                        break;
+                    default:
+                        aVal = a.votes;
+                        bVal = b.votes;
+                }
+
+                if (currentSortDirection === 'asc') {
+                    return aVal > bVal ? 1 : aVal < bVal ? -1 : 0;
+                } else {
+                    return aVal < bVal ? 1 : aVal > bVal ? -1 : 0;
+                }
+            });
 
             if (filtered.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="5" style="padding: 20px; text-align: center; color: #888;">No cross-references found for this category</td></tr>';
