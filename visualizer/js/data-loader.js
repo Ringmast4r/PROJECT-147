@@ -51,69 +51,26 @@ class BibleDataLoader {
         if (this.isLoaded && !this.isPreviewMode) return;
 
         try {
-            // Determine if we're on localhost or production
-            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            // Always use local files (works for both localhost and GitHub Pages)
+            const apiUrl = '../data/processed/graph_data_88books.json';
 
-            let apiUrl;
+            console.log('📖 Loading 88-book Biblical data...');
+            this.updateProgress(5, 'Loading 88-book Ethiopian Orthodox canon data...');
 
-            if (isLocal) {
-                // Local development - use local file (88-BOOK VERSION)
-                apiUrl = '../data/processed/graph_data_88books.json';
+            const response = await fetch(apiUrl);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
 
-                console.log('🔧 LOCAL MODE: Loading 88-book Ethiopian data...');
-                this.updateProgress(5, 'Loading 88-book Ethiopian Orthodox canon data...');
+            console.log('Graph response received, parsing JSON...');
+            this.updateProgress(60, 'Parsing JSON data...');
+            this.graphData = await response.json();
+            this.updateProgress(80, 'Processing graph data...');
 
-                const response = await fetch(apiUrl);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                console.log('Graph response received, parsing JSON...');
-                this.updateProgress(60, 'Parsing JSON data...');
-                this.graphData = await response.json();
-                this.updateProgress(80, 'Processing graph data...');
-
-                // Load stats locally (88-BOOK VERSION)
-                const statsResponse = await fetch('../data/processed/stats_88books.json');
-                if (statsResponse.ok) {
-                    this.stats = await statsResponse.json();
-                }
-
-            } else {
-                // PRODUCTION MODE: Use Cloudflare R2 API (lightweight, filtered data)
-                // API endpoint: https://bible-api.squirequirk.workers.dev/api/graph
-                apiUrl = 'https://bible-api.squirequirk.workers.dev/api/graph?testament=all&limit=10000';
-
-                console.log('☁️ PRODUCTION MODE: Loading from Cloudflare R2 API...');
-                console.log('📡 API URL:', apiUrl);
-                this.updateProgress(5, 'Connecting to Cloudflare R2...');
-
-                const controller = new AbortController();
-                const timeout = setTimeout(() => controller.abort(), 30000);
-
-                const response = await fetch(apiUrl, {
-                    signal: controller.signal,
-                    cache: 'default'
-                });
-                clearTimeout(timeout);
-
-                if (!response.ok) {
-                    throw new Error(`API error! status: ${response.status}`);
-                }
-
-                console.log('✅ API connected, downloading filtered data...');
-                this.updateProgress(20, 'Downloading from R2 (optimized)...');
-
-                console.log('Parsing API response...');
-                this.updateProgress(60, 'Parsing filtered data...');
-                this.graphData = await response.json();
-                this.updateProgress(80, 'Processing graph data...');
-
-                // Load stats from API
-                const statsResponse = await fetch('https://bible-api.squirequirk.workers.dev/api/stats');
-                if (statsResponse.ok) {
-                    this.stats = await statsResponse.json();
-                }
+            // Load stats locally (88-BOOK VERSION)
+            const statsResponse = await fetch('../data/processed/stats_88books.json');
+            if (statsResponse.ok) {
+                this.stats = await statsResponse.json();
             }
 
             this.isLoaded = true;
