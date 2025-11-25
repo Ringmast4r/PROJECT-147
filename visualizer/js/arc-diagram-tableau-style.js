@@ -337,8 +337,8 @@ class ArcDiagramTableauStyle {
                             <span><strong>Distance:</strong> ${d.distance} chapters</span>
                         </div>
                     `)
-                    .style('left', (event.pageX + 15) + 'px')
-                    .style('top', (event.pageY - 15) + 'px');
+                    .style('left', (event.clientX + 15) + 'px')
+                    .style('top', (event.clientY - 15) + 'px');
             })
             .on('mouseout', (event, d) => {
                 const colors = typeColors[d.targetType] || typeColors['Deuterocanonical'];
